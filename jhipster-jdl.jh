@@ -1,0 +1,57 @@
+entity People {
+	externalId String
+    phone String
+}
+
+relationship OneToOne {
+	People {user required} to User {people}
+}
+
+entity Place {
+	name String required
+    address String
+}
+
+entity Organizer {
+	name String required
+}
+
+relationship ManyToOne {
+	Organizer {pic required} to People
+}
+
+entity Tag {
+	name String required
+}
+
+entity Event {
+	title String required
+    startTime ZonedDateTime required
+    endTime ZonedDateTime required
+    canceled Boolean
+    published Boolean
+}
+
+relationship ManyToOne {
+	Event {place} to Place {events}
+}
+
+relationship ManyToOne {
+	Event {organizedBy} to Organizer {eventsOrganized}
+}
+
+relationship ManyToMany {
+	Event {attendees} to People {eventsAttended}
+}
+
+relationship ManyToOne {
+	Event {presenter} to People {eventsPresented}
+}
+
+relationship ManyToMany {
+	Event {specialGuests} to People {specialGuestAt}
+}
+
+relationship ManyToMany {
+	Event {tags} to Tag {events}
+}
