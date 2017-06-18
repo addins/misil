@@ -21,7 +21,7 @@
         },
         {
             "relationshipType": "many-to-many",
-            "otherEntityRelationshipName": "eventsAttended",
+            "otherEntityRelationshipName": "seminarsAttended",
             "relationshipName": "attendees",
             "otherEntityName": "people",
             "otherEntityField": "id",
@@ -37,7 +37,7 @@
         },
         {
             "relationshipType": "many-to-many",
-            "otherEntityRelationshipName": "events",
+            "otherEntityRelationshipName": "seminars",
             "relationshipName": "tags",
             "otherEntityName": "tag",
             "otherEntityField": "id",
@@ -75,8 +75,8 @@
             "fieldType": "Boolean"
         }
     ],
-    "changelogDate": "20170618105737",
-    "entityTableName": "event",
+    "changelogDate": "20170618120129",
+    "entityTableName": "seminar",
     "dto": "no",
     "pagination": "no",
     "service": "no"

@@ -40,6 +40,20 @@ public class CacheConfiguration {
             cm.createCache(org.addin.misil.domain.User.class.getName(), jcacheConfiguration);
             cm.createCache(org.addin.misil.domain.Authority.class.getName(), jcacheConfiguration);
             cm.createCache(org.addin.misil.domain.User.class.getName() + ".authorities", jcacheConfiguration);
+            cm.createCache(org.addin.misil.domain.People.class.getName(), jcacheConfiguration);
+            cm.createCache(org.addin.misil.domain.People.class.getName() + ".seminarsPresenteds", jcacheConfiguration);
+            cm.createCache(org.addin.misil.domain.People.class.getName() + ".seminarsAttendeds", jcacheConfiguration);
+            cm.createCache(org.addin.misil.domain.People.class.getName() + ".specialGuestAts", jcacheConfiguration);
+            cm.createCache(org.addin.misil.domain.Place.class.getName(), jcacheConfiguration);
+            cm.createCache(org.addin.misil.domain.Place.class.getName() + ".seminars", jcacheConfiguration);
+            cm.createCache(org.addin.misil.domain.Organizer.class.getName(), jcacheConfiguration);
+            cm.createCache(org.addin.misil.domain.Organizer.class.getName() + ".seminarsOrganizeds", jcacheConfiguration);
+            cm.createCache(org.addin.misil.domain.Tag.class.getName(), jcacheConfiguration);
+            cm.createCache(org.addin.misil.domain.Tag.class.getName() + ".seminars", jcacheConfiguration);
+            cm.createCache(org.addin.misil.domain.Seminar.class.getName(), jcacheConfiguration);
+            cm.createCache(org.addin.misil.domain.Seminar.class.getName() + ".attendees", jcacheConfiguration);
+            cm.createCache(org.addin.misil.domain.Seminar.class.getName() + ".specialGuests", jcacheConfiguration);
+            cm.createCache(org.addin.misil.domain.Seminar.class.getName() + ".tags", jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

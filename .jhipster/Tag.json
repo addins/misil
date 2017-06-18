@@ -3,8 +3,8 @@
     "relationships": [
         {
             "relationshipType": "many-to-many",
-            "relationshipName": "events",
-            "otherEntityName": "event",
+            "relationshipName": "seminars",
+            "otherEntityName": "seminar",
             "ownerSide": false,
             "otherEntityRelationshipName": "tags"
         }
@@ -18,7 +18,7 @@
             ]
         }
     ],
-    "changelogDate": "20170618105736",
+    "changelogDate": "20170618120128",
     "entityTableName": "tag",
     "dto": "no",
     "pagination": "no",

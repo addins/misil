@@ -1,0 +1,23 @@
+{
+    "misilApp": {
+        "organizer" : {
+            "home": {
+                "title": "Organizers",
+                "createLabel": "Organizer erstellen",
+                "createOrEditLabel": "Organizer erstellen oder bearbeiten"
+            },
+            "created": "Organizer erstellt mit ID {{ param }}",
+            "updated": "Organizer aktualisiert mit ID {{ param }}",
+            "deleted": "Organizer gelöscht mit ID {{ param }}",
+            "delete": {
+                "question": "Soll Organizer {{ id }} wirklich dauerhaft gelöscht werden?"
+            },
+            "detail": {
+                "title": "Organizer"
+            },
+            "name": "Name",
+            "pic": "Pic",
+            "seminarsOrganized": "Seminars Organized"
+        }
+    }
+}

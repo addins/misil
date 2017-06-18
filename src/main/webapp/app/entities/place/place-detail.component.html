@@ -1,0 +1,29 @@
+
+<div *ngIf="place">
+    <h2><span jhiTranslate="misilApp.place.detail.title">Place</span> {{place.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="misilApp.place.name">Name</span></dt>
+        <dd>
+            <span>{{place.name}}</span>
+        </dd>
+        <dt><span jhiTranslate="misilApp.place.address">Address</span></dt>
+        <dd>
+            <span>{{place.address}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'place/'+ place.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

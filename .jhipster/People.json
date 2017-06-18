@@ -12,21 +12,21 @@
         },
         {
             "relationshipType": "one-to-many",
-            "relationshipName": "eventsPresented",
-            "otherEntityName": "event",
+            "relationshipName": "seminarsPresented",
+            "otherEntityName": "seminar",
             "otherEntityRelationshipName": "presenter"
         },
         {
             "relationshipType": "many-to-many",
-            "relationshipName": "eventsAttended",
-            "otherEntityName": "event",
+            "relationshipName": "seminarsAttended",
+            "otherEntityName": "seminar",
             "ownerSide": false,
             "otherEntityRelationshipName": "attendees"
         },
         {
             "relationshipType": "many-to-many",
             "relationshipName": "specialGuestAt",
-            "otherEntityName": "event",
+            "otherEntityName": "seminar",
             "ownerSide": false,
             "otherEntityRelationshipName": "specialGuests"
         }
@@ -41,7 +41,7 @@
             "fieldType": "String"
         }
     ],
-    "changelogDate": "20170618105733",
+    "changelogDate": "20170618120125",
     "entityTableName": "people",
     "dto": "no",
     "pagination": "no",

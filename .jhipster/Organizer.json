@@ -10,8 +10,8 @@
         },
         {
             "relationshipType": "one-to-many",
-            "relationshipName": "eventsOrganized",
-            "otherEntityName": "event",
+            "relationshipName": "seminarsOrganized",
+            "otherEntityName": "seminar",
             "otherEntityRelationshipName": "organizedBy"
         }
     ],
@@ -24,7 +24,7 @@
             ]
         }
     ],
-    "changelogDate": "20170618105735",
+    "changelogDate": "20170618120127",
     "entityTableName": "organizer",
     "dto": "no",
     "pagination": "no",

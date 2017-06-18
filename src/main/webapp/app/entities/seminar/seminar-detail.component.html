@@ -1,0 +1,77 @@
+
+<div *ngIf="seminar">
+    <h2><span jhiTranslate="misilApp.seminar.detail.title">Seminar</span> {{seminar.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="misilApp.seminar.title">Title</span></dt>
+        <dd>
+            <span>{{seminar.title}}</span>
+        </dd>
+        <dt><span jhiTranslate="misilApp.seminar.startTime">Start Time</span></dt>
+        <dd>
+            <span>{{seminar.startTime | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="misilApp.seminar.endTime">End Time</span></dt>
+        <dd>
+            <span>{{seminar.endTime | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="misilApp.seminar.canceled">Canceled</span></dt>
+        <dd>
+            <span>{{seminar.canceled}}</span>
+        </dd>
+        <dt><span jhiTranslate="misilApp.seminar.published">Published</span></dt>
+        <dd>
+            <span>{{seminar.published}}</span>
+        </dd>
+        <dt><span jhiTranslate="misilApp.seminar.place">Place</span></dt>
+        <dd>
+            <div *ngIf="seminar.place">
+                <a [routerLink]="['/place', seminar.place?.id]">{{seminar.place?.id}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="misilApp.seminar.organizedBy">Organized By</span></dt>
+        <dd>
+            <div *ngIf="seminar.organizedBy">
+                <a [routerLink]="['/organizer', seminar.organizedBy?.id]">{{seminar.organizedBy?.id}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="misilApp.seminar.presenter">Presenter</span></dt>
+        <dd>
+            <div *ngIf="seminar.presenter">
+                <a [routerLink]="['/people', seminar.presenter?.id]">{{seminar.presenter?.id}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="misilApp.seminar.attendees">Attendees</span></dt>
+        <dd>
+            <span *ngFor="let attendees of seminar.attendees; let last = last">
+                <a [routerLink]="['/people', attendees?.id ]">{{attendees.id}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
+        <dt><span jhiTranslate="misilApp.seminar.specialGuests">Special Guests</span></dt>
+        <dd>
+            <span *ngFor="let specialGuests of seminar.specialGuests; let last = last">
+                <a [routerLink]="['/people', specialGuests?.id ]">{{specialGuests.id}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
+        <dt><span jhiTranslate="misilApp.seminar.tags">Tags</span></dt>
+        <dd>
+            <span *ngFor="let tags of seminar.tags; let last = last">
+                <a [routerLink]="['/tag', tags?.id ]">{{tags.id}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'seminar/'+ seminar.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

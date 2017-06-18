@@ -1,0 +1,31 @@
+{
+    "misilApp": {
+        "seminar" : {
+            "home": {
+                "title": "Seminars",
+                "createLabel": "Create a new Seminar",
+                "createOrEditLabel": "Create or edit a Seminar"
+            },
+            "created": "A new Seminar is created with identifier {{ param }}",
+            "updated": "A Seminar is updated with identifier {{ param }}",
+            "deleted": "A Seminar is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Seminar {{ id }}?"
+            },
+            "detail": {
+                "title": "Seminar"
+            },
+            "title": "Title",
+            "startTime": "Start Time",
+            "endTime": "End Time",
+            "canceled": "Canceled",
+            "published": "Published",
+            "place": "Place",
+            "organizedBy": "Organized By",
+            "presenter": "Presenter",
+            "attendees": "Attendees",
+            "specialGuests": "Special Guests",
+            "tags": "Tags"
+        }
+    }
+}

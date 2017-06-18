@@ -24,7 +24,7 @@ entity Tag {
 	name String required
 }
 
-entity Event {
+entity Seminar {
 	title String required
     startTime ZonedDateTime required
     endTime ZonedDateTime required
@@ -33,25 +33,25 @@ entity Event {
 }
 
 relationship ManyToOne {
-	Event {place} to Place {events}
+	Seminar {place} to Place {seminars}
 }
 
 relationship ManyToOne {
-	Event {organizedBy} to Organizer {eventsOrganized}
+	Seminar {organizedBy} to Organizer {seminarsOrganized}
 }
 
 relationship ManyToMany {
-	Event {attendees} to People {eventsAttended}
+	Seminar {attendees} to People {seminarsAttended}
 }
 
 relationship ManyToOne {
-	Event {presenter} to People {eventsPresented}
+	Seminar {presenter} to People {seminarsPresented}
 }
 
 relationship ManyToMany {
-	Event {specialGuests} to People {specialGuestAt}
+	Seminar {specialGuests} to People {specialGuestAt}
 }
 
 relationship ManyToMany {
-	Event {tags} to Tag {events}
+	Seminar {tags} to Tag {seminars}
 }

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <!--
+        Added the constraints for entity Seminar.
+    -->
+    <changeSet id="20170618120129-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="place_id"
+                                 baseTableName="seminar"
+                                 constraintName="fk_seminar_place_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="place"/>
+
+        <addForeignKeyConstraint baseColumnNames="organized_by_id"
+                                 baseTableName="seminar"
+                                 constraintName="fk_seminar_organized_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="organizer"/>
+
+        <addForeignKeyConstraint baseColumnNames="presenter_id"
+                                 baseTableName="seminar"
+                                 constraintName="fk_seminar_presenter_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="people"/>
+
+        <addForeignKeyConstraint baseColumnNames="seminars_id"
+                                 baseTableName="seminar_attendees"
+                                 constraintName="fk_seminar_attendees_seminars_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="seminar"/>
+        <addForeignKeyConstraint baseColumnNames="attendees_id"
+                                 baseTableName="seminar_attendees"
+                                 constraintName="fk_seminar_attendees_attendees_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="people"/>
+        
+        <addForeignKeyConstraint baseColumnNames="seminars_id"
+                                 baseTableName="seminar_special_guests"
+                                 constraintName="fk_seminar_special_guests_seminars_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="seminar"/>
+        <addForeignKeyConstraint baseColumnNames="special_guests_id"
+                                 baseTableName="seminar_special_guests"
+                                 constraintName="fk_seminar_special_guests_special_guests_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="people"/>
+        
+        <addForeignKeyConstraint baseColumnNames="seminars_id"
+                                 baseTableName="seminar_tags"
+                                 constraintName="fk_seminar_tags_seminars_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="seminar"/>
+        <addForeignKeyConstraint baseColumnNames="tags_id"
+                                 baseTableName="seminar_tags"
+                                 constraintName="fk_seminar_tags_tags_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tag"/>
+        
+    </changeSet>
+</databaseChangeLog>

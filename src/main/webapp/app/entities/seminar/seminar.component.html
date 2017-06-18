@@ -1,0 +1,100 @@
+<div>
+    <h2>
+        <span jhiTranslate="misilApp.seminar.home.title">Seminars</span>
+        <button class="btn btn-primary float-right create-seminar" [routerLink]="['/', { outlets: { popup: ['seminar-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span  jhiTranslate="misilApp.seminar.home.createLabel">
+            Create new Seminar
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="seminars">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="misilApp.seminar.title">Title</span></th>
+            <th><span jhiTranslate="misilApp.seminar.startTime">Start Time</span></th>
+            <th><span jhiTranslate="misilApp.seminar.endTime">End Time</span></th>
+            <th><span jhiTranslate="misilApp.seminar.canceled">Canceled</span></th>
+            <th><span jhiTranslate="misilApp.seminar.published">Published</span></th>
+            <th><span jhiTranslate="misilApp.seminar.place">Place</span></th>
+            <th><span jhiTranslate="misilApp.seminar.organizedBy">Organized By</span></th>
+            <th><span jhiTranslate="misilApp.seminar.presenter">Presenter</span></th>
+            <th><span jhiTranslate="misilApp.seminar.attendees">Attendees</span></th>
+            <th><span jhiTranslate="misilApp.seminar.specialGuests">Special Guests</span></th>
+            <th><span jhiTranslate="misilApp.seminar.tags">Tags</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let seminar of seminars ;trackBy: trackId">
+                <td><a [routerLink]="['../seminar', seminar.id ]">{{seminar.id}}</a></td>
+                <td>{{seminar.title}}</td>
+                <td>{{seminar.startTime | date:'medium'}}</td>
+                <td>{{seminar.endTime | date:'medium'}}</td>
+                <td>{{seminar.canceled}}</td>
+                <td>{{seminar.published}}</td>
+                <td>
+                    <div *ngIf="seminar.place">
+                        <a [routerLink]="['../place', seminar.place?.id ]" >{{seminar.place?.id}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="seminar.organizedBy">
+                        <a [routerLink]="['../organizer', seminar.organizedBy?.id ]" >{{seminar.organizedBy?.id}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="seminar.presenter">
+                        <a [routerLink]="['../people', seminar.presenter?.id ]" >{{seminar.presenter?.id}}</a>
+                    </div>
+                </td>
+                <td>
+                    <span *ngFor="let attendees of seminar.attendees; let last = last">
+                            <a class="form-control-static" [routerLink]="['../people', attendees?.id ]">{{attendees.id}}</a>{{last ? '' : ', '}}
+                        </span>
+                </td>
+                <td>
+                    <span *ngFor="let specialGuests of seminar.specialGuests; let last = last">
+                            <a class="form-control-static" [routerLink]="['../people', specialGuests?.id ]">{{specialGuests.id}}</a>{{last ? '' : ', '}}
+                        </span>
+                </td>
+                <td>
+                    <span *ngFor="let tags of seminar.tags; let last = last">
+                            <a class="form-control-static" [routerLink]="['../tag', tags?.id ]">{{tags.id}}</a>{{last ? '' : ', '}}
+                        </span>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../seminar', seminar.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="hidden-md-down" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'seminar/'+ seminar.id + '/edit'} }]"
+                                replaceUrl="true"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="hidden-md-down" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'seminar/'+ seminar.id + '/delete'} }]"
+                                replaceUrl="true"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="hidden-md-down" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,26 @@
+{
+    "misilApp": {
+        "people" : {
+            "home": {
+                "title": "People",
+                "createLabel": "People erstellen",
+                "createOrEditLabel": "People erstellen oder bearbeiten"
+            },
+            "created": "People erstellt mit ID {{ param }}",
+            "updated": "People aktualisiert mit ID {{ param }}",
+            "deleted": "People gelöscht mit ID {{ param }}",
+            "delete": {
+                "question": "Soll People {{ id }} wirklich dauerhaft gelöscht werden?"
+            },
+            "detail": {
+                "title": "People"
+            },
+            "externalId": "External Id",
+            "phone": "Phone",
+            "user": "User",
+            "seminarsPresented": "Seminars Presented",
+            "seminarsAttended": "Seminars Attended",
+            "specialGuestAt": "Special Guest At"
+        }
+    }
+}

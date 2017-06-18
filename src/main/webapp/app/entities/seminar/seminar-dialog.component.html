@@ -1,0 +1,119 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="mySeminarLabel" jhiTranslate="misilApp.seminar.home.createOrEditLabel">Create or edit a Seminar</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!seminar.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="seminar.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="misilApp.seminar.title" for="field_title">Title</label>
+            <input type="text" class="form-control" name="title" id="field_title"
+                [(ngModel)]="seminar.title" required />
+            <div [hidden]="!(editForm.controls.title?.dirty && editForm.controls.title?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.title?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="misilApp.seminar.startTime" for="field_startTime">Start Time</label>
+            <div class="d-flex">
+                <input id="field_startTime" type="datetime-local" class="form-control" name="startTime" [(ngModel)]="seminar.startTime"
+                required  />
+            </div>
+            <div [hidden]="!(editForm.controls.startTime?.dirty && editForm.controls.startTime?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.startTime?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.startTime?.errors?.ZonedDateTimelocal" jhiTranslate="entity.validation.ZonedDateTimelocal">
+                    This field should be a date and time.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="misilApp.seminar.endTime" for="field_endTime">End Time</label>
+            <div class="d-flex">
+                <input id="field_endTime" type="datetime-local" class="form-control" name="endTime" [(ngModel)]="seminar.endTime"
+                required  />
+            </div>
+            <div [hidden]="!(editForm.controls.endTime?.dirty && editForm.controls.endTime?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.endTime?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.endTime?.errors?.ZonedDateTimelocal" jhiTranslate="entity.validation.ZonedDateTimelocal">
+                    This field should be a date and time.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="misilApp.seminar.canceled" for="field_canceled">Canceled</label>
+            <input type="checkbox" class="form-control" name="canceled" id="field_canceled"
+                [(ngModel)]="seminar.canceled"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="misilApp.seminar.published" for="field_published">Published</label>
+            <input type="checkbox" class="form-control" name="published" id="field_published"
+                [(ngModel)]="seminar.published"  />
+        </div>
+
+        <div class="form-group">
+            <label jhiTranslate="misilApp.seminar.place" for="field_place">Place</label>
+            <select class="form-control" id="field_place" name="place" [(ngModel)]="seminar.place" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="placeOption.id === seminar.place?.id ? seminar.place : placeOption" *ngFor="let placeOption of places; trackBy: trackPlaceById">{{placeOption.id}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label jhiTranslate="misilApp.seminar.organizedBy" for="field_organizedBy">Organized By</label>
+            <select class="form-control" id="field_organizedBy" name="organizedBy" [(ngModel)]="seminar.organizedBy" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="organizerOption.id === seminar.organizedBy?.id ? seminar.organizedBy : organizerOption" *ngFor="let organizerOption of organizers; trackBy: trackOrganizerById">{{organizerOption.id}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label jhiTranslate="misilApp.seminar.presenter" for="field_presenter">Presenter</label>
+            <select class="form-control" id="field_presenter" name="presenter" [(ngModel)]="seminar.presenter" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="peopleOption.id === seminar.presenter?.id ? seminar.presenter : peopleOption" *ngFor="let peopleOption of people; trackBy: trackPeopleById">{{peopleOption.id}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label jhiTranslate="misilApp.seminar.attendees" for="field_attendees">Attendees</label>
+            <select class="form-control" id="field_attendees" multiple name="attendees" [(ngModel)]="seminar.attendees">
+                <option [ngValue]="getSelected(seminar.attendees, peopleOption)" *ngFor="let peopleOption of people; trackBy: trackPeopleById">{{peopleOption.id}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label jhiTranslate="misilApp.seminar.specialGuests" for="field_specialGuests">Special Guests</label>
+            <select class="form-control" id="field_specialGuests" multiple name="specialGuests" [(ngModel)]="seminar.specialGuests">
+                <option [ngValue]="getSelected(seminar.specialGuests, peopleOption)" *ngFor="let peopleOption of people; trackBy: trackPeopleById">{{peopleOption.id}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label jhiTranslate="misilApp.seminar.tags" for="field_tags">Tags</label>
+            <select class="form-control" id="field_tags" multiple name="tags" [(ngModel)]="seminar.tags">
+                <option [ngValue]="getSelected(seminar.tags, tagOption)" *ngFor="let tagOption of tags; trackBy: trackTagById">{{tagOption.id}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>
