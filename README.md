@@ -1,4 +1,6 @@
 # misil
+[![Build Status](https://travis-ci.org/addins/misil.svg?branch=master)](https://travis-ci.org/addins/misil)
+
 This application was generated using JHipster 4.5.4, you can find documentation and help at [https://jhipster.github.io/documentation-archive/v4.5.4](https://jhipster.github.io/documentation-archive/v4.5.4).
 
 ## Development
