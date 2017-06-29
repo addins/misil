@@ -13,6 +13,12 @@
             "relationshipName": "seminarsOrganized",
             "otherEntityName": "seminar",
             "otherEntityRelationshipName": "organizedBy"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "places",
+            "otherEntityName": "place",
+            "otherEntityRelationshipName": "organizedBy"
         }
     ],
     "fields": [
@@ -26,7 +32,7 @@
     ],
     "changelogDate": "20170618120127",
     "entityTableName": "organizer",
-    "dto": "no",
-    "pagination": "no",
-    "service": "no"
+    "dto": "mapstruct",
+    "pagination": "pager",
+    "service": "serviceImpl"
 }

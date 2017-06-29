@@ -77,7 +77,7 @@
     ],
     "changelogDate": "20170618120129",
     "entityTableName": "seminar",
-    "dto": "no",
-    "pagination": "no",
-    "service": "no"
+    "dto": "mapstruct",
+    "pagination": "infinite-scroll",
+    "service": "serviceImpl"
 }

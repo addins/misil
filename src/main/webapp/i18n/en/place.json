@@ -17,7 +17,8 @@
             },
             "name": "Name",
             "address": "Address",
-            "seminars": "Seminars"
+            "organizedBy": "Organized By",
+            "events": "Events"
         }
     }
 }

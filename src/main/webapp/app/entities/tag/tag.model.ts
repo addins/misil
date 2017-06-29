@@ -1,9 +1,8 @@
-import { Seminar } from '../seminar';
 export class Tag {
     constructor(
         public id?: number,
         public name?: string,
-        public seminars?: Seminar,
+        public seminarsId?: number,
     ) {
     }
 }

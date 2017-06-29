@@ -6,10 +6,11 @@ import { Observable } from 'rxjs/Rx';
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
+import { Seminar } from '../seminar/seminar.model';
+import { SeminarService } from '../seminar/seminar.service';
 import { People } from './people.model';
 import { PeoplePopupService } from './people-popup.service';
 import { PeopleService } from './people.service';
-import { Seminar, SeminarService } from '../seminar';
 import { User, UserService } from '../../shared';
 import { ResponseWrapper } from '../../shared';
 
@@ -30,9 +31,9 @@ export class PeopleDialogComponent implements OnInit {
     constructor(
         public activeModal: NgbActiveModal,
         private alertService: JhiAlertService,
+        private seminarService: SeminarService,
         private peopleService: PeopleService,
         private userService: UserService,
-        private seminarService: SeminarService,
         private eventManager: JhiEventManager
     ) {
     }

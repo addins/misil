@@ -4,6 +4,9 @@ import org.addin.misil.MisilApp;
 
 import org.addin.misil.domain.Seminar;
 import org.addin.misil.repository.SeminarRepository;
+import org.addin.misil.service.SeminarService;
+import org.addin.misil.service.dto.SeminarDTO;
+import org.addin.misil.service.mapper.SeminarMapper;
 import org.addin.misil.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -61,6 +64,12 @@ public class SeminarResourceIntTest {
     private SeminarRepository seminarRepository;
 
     @Autowired
+    private SeminarMapper seminarMapper;
+
+    @Autowired
+    private SeminarService seminarService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -79,7 +88,7 @@ public class SeminarResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        SeminarResource seminarResource = new SeminarResource(seminarRepository);
+        SeminarResource seminarResource = new SeminarResource(seminarService);
         this.restSeminarMockMvc = MockMvcBuilders.standaloneSetup(seminarResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -113,9 +122,10 @@ public class SeminarResourceIntTest {
         int databaseSizeBeforeCreate = seminarRepository.findAll().size();
 
         // Create the Seminar
+        SeminarDTO seminarDTO = seminarMapper.toDto(seminar);
         restSeminarMockMvc.perform(post("/api/seminars")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(seminar)))
+            .content(TestUtil.convertObjectToJsonBytes(seminarDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Seminar in the database
@@ -136,11 +146,12 @@ public class SeminarResourceIntTest {
 
         // Create the Seminar with an existing ID
         seminar.setId(1L);
+        SeminarDTO seminarDTO = seminarMapper.toDto(seminar);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restSeminarMockMvc.perform(post("/api/seminars")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(seminar)))
+            .content(TestUtil.convertObjectToJsonBytes(seminarDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
@@ -156,10 +167,11 @@ public class SeminarResourceIntTest {
         seminar.setTitle(null);
 
         // Create the Seminar, which fails.
+        SeminarDTO seminarDTO = seminarMapper.toDto(seminar);
 
         restSeminarMockMvc.perform(post("/api/seminars")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(seminar)))
+            .content(TestUtil.convertObjectToJsonBytes(seminarDTO)))
             .andExpect(status().isBadRequest());
 
         List<Seminar> seminarList = seminarRepository.findAll();
@@ -174,10 +186,11 @@ public class SeminarResourceIntTest {
         seminar.setStartTime(null);
 
         // Create the Seminar, which fails.
+        SeminarDTO seminarDTO = seminarMapper.toDto(seminar);
 
         restSeminarMockMvc.perform(post("/api/seminars")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(seminar)))
+            .content(TestUtil.convertObjectToJsonBytes(seminarDTO)))
             .andExpect(status().isBadRequest());
 
         List<Seminar> seminarList = seminarRepository.findAll();
@@ -192,10 +205,11 @@ public class SeminarResourceIntTest {
         seminar.setEndTime(null);
 
         // Create the Seminar, which fails.
+        SeminarDTO seminarDTO = seminarMapper.toDto(seminar);
 
         restSeminarMockMvc.perform(post("/api/seminars")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(seminar)))
+            .content(TestUtil.convertObjectToJsonBytes(seminarDTO)))
             .andExpect(status().isBadRequest());
 
         List<Seminar> seminarList = seminarRepository.findAll();
@@ -261,10 +275,11 @@ public class SeminarResourceIntTest {
             .endTime(UPDATED_END_TIME)
             .canceled(UPDATED_CANCELED)
             .published(UPDATED_PUBLISHED);
+        SeminarDTO seminarDTO = seminarMapper.toDto(updatedSeminar);
 
         restSeminarMockMvc.perform(put("/api/seminars")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedSeminar)))
+            .content(TestUtil.convertObjectToJsonBytes(seminarDTO)))
             .andExpect(status().isOk());
 
         // Validate the Seminar in the database
@@ -284,11 +299,12 @@ public class SeminarResourceIntTest {
         int databaseSizeBeforeUpdate = seminarRepository.findAll().size();
 
         // Create the Seminar
+        SeminarDTO seminarDTO = seminarMapper.toDto(seminar);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restSeminarMockMvc.perform(put("/api/seminars")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(seminar)))
+            .content(TestUtil.convertObjectToJsonBytes(seminarDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Seminar in the database
@@ -326,5 +342,28 @@ public class SeminarResourceIntTest {
         assertThat(seminar1).isNotEqualTo(seminar2);
         seminar1.setId(null);
         assertThat(seminar1).isNotEqualTo(seminar2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(SeminarDTO.class);
+        SeminarDTO seminarDTO1 = new SeminarDTO();
+        seminarDTO1.setId(1L);
+        SeminarDTO seminarDTO2 = new SeminarDTO();
+        assertThat(seminarDTO1).isNotEqualTo(seminarDTO2);
+        seminarDTO2.setId(seminarDTO1.getId());
+        assertThat(seminarDTO1).isEqualTo(seminarDTO2);
+        seminarDTO2.setId(2L);
+        assertThat(seminarDTO1).isNotEqualTo(seminarDTO2);
+        seminarDTO1.setId(null);
+        assertThat(seminarDTO1).isNotEqualTo(seminarDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(seminarMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(seminarMapper.fromId(null)).isNull();
     }
 }

@@ -33,10 +33,13 @@ public class Place implements Serializable {
     @Column(name = "address")
     private String address;
 
+    @ManyToOne
+    private Organizer organizedBy;
+
     @OneToMany(mappedBy = "place")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Seminar> seminars = new HashSet<>();
+    private Set<Seminar> events = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -72,29 +75,42 @@ public class Place implements Serializable {
         this.address = address;
     }
 
-    public Set<Seminar> getSeminars() {
-        return seminars;
+    public Organizer getOrganizedBy() {
+        return organizedBy;
     }
 
-    public Place seminars(Set<Seminar> seminars) {
-        this.seminars = seminars;
+    public Place organizedBy(Organizer organizer) {
+        this.organizedBy = organizer;
         return this;
     }
 
-    public Place addSeminars(Seminar seminar) {
-        this.seminars.add(seminar);
+    public void setOrganizedBy(Organizer organizer) {
+        this.organizedBy = organizer;
+    }
+
+    public Set<Seminar> getEvents() {
+        return events;
+    }
+
+    public Place events(Set<Seminar> seminars) {
+        this.events = seminars;
+        return this;
+    }
+
+    public Place addEvents(Seminar seminar) {
+        this.events.add(seminar);
         seminar.setPlace(this);
         return this;
     }
 
-    public Place removeSeminars(Seminar seminar) {
-        this.seminars.remove(seminar);
+    public Place removeEvents(Seminar seminar) {
+        this.events.remove(seminar);
         seminar.setPlace(null);
         return this;
     }
 
-    public void setSeminars(Set<Seminar> seminars) {
-        this.seminars = seminars;
+    public void setEvents(Set<Seminar> seminars) {
+        this.events = seminars;
     }
 
     @Override

@@ -4,6 +4,9 @@ import org.addin.misil.MisilApp;
 
 import org.addin.misil.domain.Tag;
 import org.addin.misil.repository.TagRepository;
+import org.addin.misil.service.TagService;
+import org.addin.misil.service.dto.TagDTO;
+import org.addin.misil.service.mapper.TagMapper;
 import org.addin.misil.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -44,6 +47,12 @@ public class TagResourceIntTest {
     private TagRepository tagRepository;
 
     @Autowired
+    private TagMapper tagMapper;
+
+    @Autowired
+    private TagService tagService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -62,7 +71,7 @@ public class TagResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        TagResource tagResource = new TagResource(tagRepository);
+        TagResource tagResource = new TagResource(tagService);
         this.restTagMockMvc = MockMvcBuilders.standaloneSetup(tagResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -92,9 +101,10 @@ public class TagResourceIntTest {
         int databaseSizeBeforeCreate = tagRepository.findAll().size();
 
         // Create the Tag
+        TagDTO tagDTO = tagMapper.toDto(tag);
         restTagMockMvc.perform(post("/api/tags")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(tag)))
+            .content(TestUtil.convertObjectToJsonBytes(tagDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Tag in the database
@@ -111,11 +121,12 @@ public class TagResourceIntTest {
 
         // Create the Tag with an existing ID
         tag.setId(1L);
+        TagDTO tagDTO = tagMapper.toDto(tag);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restTagMockMvc.perform(post("/api/tags")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(tag)))
+            .content(TestUtil.convertObjectToJsonBytes(tagDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
@@ -131,10 +142,11 @@ public class TagResourceIntTest {
         tag.setName(null);
 
         // Create the Tag, which fails.
+        TagDTO tagDTO = tagMapper.toDto(tag);
 
         restTagMockMvc.perform(post("/api/tags")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(tag)))
+            .content(TestUtil.convertObjectToJsonBytes(tagDTO)))
             .andExpect(status().isBadRequest());
 
         List<Tag> tagList = tagRepository.findAll();
@@ -188,10 +200,11 @@ public class TagResourceIntTest {
         Tag updatedTag = tagRepository.findOne(tag.getId());
         updatedTag
             .name(UPDATED_NAME);
+        TagDTO tagDTO = tagMapper.toDto(updatedTag);
 
         restTagMockMvc.perform(put("/api/tags")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedTag)))
+            .content(TestUtil.convertObjectToJsonBytes(tagDTO)))
             .andExpect(status().isOk());
 
         // Validate the Tag in the database
@@ -207,11 +220,12 @@ public class TagResourceIntTest {
         int databaseSizeBeforeUpdate = tagRepository.findAll().size();
 
         // Create the Tag
+        TagDTO tagDTO = tagMapper.toDto(tag);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restTagMockMvc.perform(put("/api/tags")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(tag)))
+            .content(TestUtil.convertObjectToJsonBytes(tagDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Tag in the database
@@ -249,5 +263,28 @@ public class TagResourceIntTest {
         assertThat(tag1).isNotEqualTo(tag2);
         tag1.setId(null);
         assertThat(tag1).isNotEqualTo(tag2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(TagDTO.class);
+        TagDTO tagDTO1 = new TagDTO();
+        tagDTO1.setId(1L);
+        TagDTO tagDTO2 = new TagDTO();
+        assertThat(tagDTO1).isNotEqualTo(tagDTO2);
+        tagDTO2.setId(tagDTO1.getId());
+        assertThat(tagDTO1).isEqualTo(tagDTO2);
+        tagDTO2.setId(2L);
+        assertThat(tagDTO1).isNotEqualTo(tagDTO2);
+        tagDTO1.setId(null);
+        assertThat(tagDTO1).isNotEqualTo(tagDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(tagMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(tagMapper.fromId(null)).isNull();
     }
 }

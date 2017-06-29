@@ -15,10 +15,10 @@
     <div class="table-responsive" *ngIf="organizers">
         <table class="table table-striped">
             <thead>
-            <tr>
-            <th><span jhiTranslate="global.field.id">ID</span></th>
-            <th><span jhiTranslate="misilApp.organizer.name">Name</span></th>
-            <th><span jhiTranslate="misilApp.organizer.pic">Pic</span></th>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="name"><span jhiTranslate="misilApp.organizer.name">Name</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="picId"><span jhiTranslate="misilApp.organizer.pic">Pic</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
             </thead>
@@ -27,8 +27,8 @@
                 <td><a [routerLink]="['../organizer', organizer.id ]">{{organizer.id}}</a></td>
                 <td>{{organizer.name}}</td>
                 <td>
-                    <div *ngIf="organizer.pic">
-                        <a [routerLink]="['../people', organizer.pic?.id ]" >{{organizer.pic?.id}}</a>
+                    <div *ngIf="organizer.picId">
+                        <a [routerLink]="['../people', organizer.picId  ]" >{{organizer.picId}}</a>
                     </div>
                 </td>
                 <td class="text-right">
@@ -59,4 +59,13 @@
             </tbody>
         </table>
     </div>
+        <!-- Pager is not implemented yet, so this is normal pagination instead -->
+        <div *ngIf="organizers && organizers.length">
+            <div class="row justify-content-center">
+                <jhi-item-count [page]="page" [total]="queryCount" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+            </div>
+            <div class="row justify-content-center">
+                <ngb-pagination [collectionSize]="totalItems" [(page)]="page"  (pageChange)="loadPage(page)"></ngb-pagination>
+            </div>
+        </div>
 </div>

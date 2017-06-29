@@ -39,6 +39,11 @@ public class Organizer implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Seminar> seminarsOrganizeds = new HashSet<>();
 
+    @OneToMany(mappedBy = "organizedBy")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Place> places = new HashSet<>();
+
     public Long getId() {
         return id;
     }
@@ -96,6 +101,31 @@ public class Organizer implements Serializable {
 
     public void setSeminarsOrganizeds(Set<Seminar> seminars) {
         this.seminarsOrganizeds = seminars;
+    }
+
+    public Set<Place> getPlaces() {
+        return places;
+    }
+
+    public Organizer places(Set<Place> places) {
+        this.places = places;
+        return this;
+    }
+
+    public Organizer addPlaces(Place place) {
+        this.places.add(place);
+        place.setOrganizedBy(this);
+        return this;
+    }
+
+    public Organizer removePlaces(Place place) {
+        this.places.remove(place);
+        place.setOrganizedBy(null);
+        return this;
+    }
+
+    public void setPlaces(Set<Place> places) {
+        this.places = places;
     }
 
     @Override

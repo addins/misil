@@ -1,13 +1,18 @@
 package org.addin.misil.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import org.addin.misil.domain.Tag;
-
-import org.addin.misil.repository.TagRepository;
+import org.addin.misil.service.TagService;
 import org.addin.misil.web.rest.util.HeaderUtil;
+import org.addin.misil.web.rest.util.PaginationUtil;
+import org.addin.misil.service.dto.TagDTO;
+import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,27 +34,27 @@ public class TagResource {
 
     private static final String ENTITY_NAME = "tag";
 
-    private final TagRepository tagRepository;
+    private final TagService tagService;
 
-    public TagResource(TagRepository tagRepository) {
-        this.tagRepository = tagRepository;
+    public TagResource(TagService tagService) {
+        this.tagService = tagService;
     }
 
     /**
      * POST  /tags : Create a new tag.
      *
-     * @param tag the tag to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new tag, or with status 400 (Bad Request) if the tag has already an ID
+     * @param tagDTO the tagDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new tagDTO, or with status 400 (Bad Request) if the tag has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/tags")
     @Timed
-    public ResponseEntity<Tag> createTag(@Valid @RequestBody Tag tag) throws URISyntaxException {
-        log.debug("REST request to save Tag : {}", tag);
-        if (tag.getId() != null) {
+    public ResponseEntity<TagDTO> createTag(@Valid @RequestBody TagDTO tagDTO) throws URISyntaxException {
+        log.debug("REST request to save Tag : {}", tagDTO);
+        if (tagDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new tag cannot already have an ID")).body(null);
         }
-        Tag result = tagRepository.save(tag);
+        TagDTO result = tagService.save(tagDTO);
         return ResponseEntity.created(new URI("/api/tags/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -58,62 +63,65 @@ public class TagResource {
     /**
      * PUT  /tags : Updates an existing tag.
      *
-     * @param tag the tag to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated tag,
-     * or with status 400 (Bad Request) if the tag is not valid,
-     * or with status 500 (Internal Server Error) if the tag couldn't be updated
+     * @param tagDTO the tagDTO to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated tagDTO,
+     * or with status 400 (Bad Request) if the tagDTO is not valid,
+     * or with status 500 (Internal Server Error) if the tagDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/tags")
     @Timed
-    public ResponseEntity<Tag> updateTag(@Valid @RequestBody Tag tag) throws URISyntaxException {
-        log.debug("REST request to update Tag : {}", tag);
-        if (tag.getId() == null) {
-            return createTag(tag);
+    public ResponseEntity<TagDTO> updateTag(@Valid @RequestBody TagDTO tagDTO) throws URISyntaxException {
+        log.debug("REST request to update Tag : {}", tagDTO);
+        if (tagDTO.getId() == null) {
+            return createTag(tagDTO);
         }
-        Tag result = tagRepository.save(tag);
+        TagDTO result = tagService.save(tagDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, tag.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, tagDTO.getId().toString()))
             .body(result);
     }
 
     /**
      * GET  /tags : get all the tags.
      *
+     * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of tags in body
      */
     @GetMapping("/tags")
     @Timed
-    public List<Tag> getAllTags() {
-        log.debug("REST request to get all Tags");
-        return tagRepository.findAll();
+    public ResponseEntity<List<TagDTO>> getAllTags(@ApiParam Pageable pageable) {
+        log.debug("REST request to get a page of Tags");
+        Page<TagDTO> page = tagService.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/tags");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     /**
      * GET  /tags/:id : get the "id" tag.
      *
-     * @param id the id of the tag to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the tag, or with status 404 (Not Found)
+     * @param id the id of the tagDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the tagDTO, or with status 404 (Not Found)
      */
     @GetMapping("/tags/{id}")
     @Timed
-    public ResponseEntity<Tag> getTag(@PathVariable Long id) {
+    public ResponseEntity<TagDTO> getTag(@PathVariable Long id) {
         log.debug("REST request to get Tag : {}", id);
-        Tag tag = tagRepository.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(tag));
+        TagDTO tagDTO = tagService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(tagDTO));
     }
 
     /**
      * DELETE  /tags/:id : delete the "id" tag.
      *
-     * @param id the id of the tag to delete
+     * @param id the id of the tagDTO to delete
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/tags/{id}")
     @Timed
     public ResponseEntity<Void> deleteTag(@PathVariable Long id) {
         log.debug("REST request to delete Tag : {}", id);
-        tagRepository.delete(id);
+        tagService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 }

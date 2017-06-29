@@ -33,11 +33,15 @@ entity Seminar {
 }
 
 relationship ManyToOne {
-	Seminar {place} to Place {seminars}
+	Seminar {place} to Place {events}
 }
 
 relationship ManyToOne {
 	Seminar {organizedBy} to Organizer {seminarsOrganized}
+}
+
+relationship ManyToOne {
+	Place {organizedBy} to Organizer {places}
 }
 
 relationship ManyToMany {
@@ -55,3 +59,8 @@ relationship ManyToMany {
 relationship ManyToMany {
 	Seminar {tags} to Tag {seminars}
 }
+
+dto Seminar, Place, Organizer, People, Tag with mapstruct
+service all with serviceImpl
+paginate Seminar with infinite-scroll
+paginate Place, Organizer, Tag, People with pager

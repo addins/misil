@@ -15,23 +15,20 @@
     <div class="table-responsive" *ngIf="seminars">
         <table class="table table-striped">
             <thead>
-            <tr>
-            <th><span jhiTranslate="global.field.id">ID</span></th>
-            <th><span jhiTranslate="misilApp.seminar.title">Title</span></th>
-            <th><span jhiTranslate="misilApp.seminar.startTime">Start Time</span></th>
-            <th><span jhiTranslate="misilApp.seminar.endTime">End Time</span></th>
-            <th><span jhiTranslate="misilApp.seminar.canceled">Canceled</span></th>
-            <th><span jhiTranslate="misilApp.seminar.published">Published</span></th>
-            <th><span jhiTranslate="misilApp.seminar.place">Place</span></th>
-            <th><span jhiTranslate="misilApp.seminar.organizedBy">Organized By</span></th>
-            <th><span jhiTranslate="misilApp.seminar.presenter">Presenter</span></th>
-            <th><span jhiTranslate="misilApp.seminar.attendees">Attendees</span></th>
-            <th><span jhiTranslate="misilApp.seminar.specialGuests">Special Guests</span></th>
-            <th><span jhiTranslate="misilApp.seminar.tags">Tags</span></th>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="title"><span jhiTranslate="misilApp.seminar.title">Title</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="startTime"><span jhiTranslate="misilApp.seminar.startTime">Start Time</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="endTime"><span jhiTranslate="misilApp.seminar.endTime">End Time</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="canceled"><span jhiTranslate="misilApp.seminar.canceled">Canceled</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="published"><span jhiTranslate="misilApp.seminar.published">Published</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="placeId"><span jhiTranslate="misilApp.seminar.place">Place</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="organizedById"><span jhiTranslate="misilApp.seminar.organizedBy">Organized By</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="presenterId"><span jhiTranslate="misilApp.seminar.presenter">Presenter</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
             </thead>
-            <tbody>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
             <tr *ngFor="let seminar of seminars ;trackBy: trackId">
                 <td><a [routerLink]="['../seminar', seminar.id ]">{{seminar.id}}</a></td>
                 <td>{{seminar.title}}</td>
@@ -40,34 +37,19 @@
                 <td>{{seminar.canceled}}</td>
                 <td>{{seminar.published}}</td>
                 <td>
-                    <div *ngIf="seminar.place">
-                        <a [routerLink]="['../place', seminar.place?.id ]" >{{seminar.place?.id}}</a>
+                    <div *ngIf="seminar.placeId">
+                        <a [routerLink]="['../place', seminar.placeId  ]" >{{seminar.placeId}}</a>
                     </div>
                 </td>
                 <td>
-                    <div *ngIf="seminar.organizedBy">
-                        <a [routerLink]="['../organizer', seminar.organizedBy?.id ]" >{{seminar.organizedBy?.id}}</a>
+                    <div *ngIf="seminar.organizedById">
+                        <a [routerLink]="['../organizer', seminar.organizedById  ]" >{{seminar.organizedById}}</a>
                     </div>
                 </td>
                 <td>
-                    <div *ngIf="seminar.presenter">
-                        <a [routerLink]="['../people', seminar.presenter?.id ]" >{{seminar.presenter?.id}}</a>
+                    <div *ngIf="seminar.presenterId">
+                        <a [routerLink]="['../people', seminar.presenterId  ]" >{{seminar.presenterId}}</a>
                     </div>
-                </td>
-                <td>
-                    <span *ngFor="let attendees of seminar.attendees; let last = last">
-                            <a class="form-control-static" [routerLink]="['../people', attendees?.id ]">{{attendees.id}}</a>{{last ? '' : ', '}}
-                        </span>
-                </td>
-                <td>
-                    <span *ngFor="let specialGuests of seminar.specialGuests; let last = last">
-                            <a class="form-control-static" [routerLink]="['../people', specialGuests?.id ]">{{specialGuests.id}}</a>{{last ? '' : ', '}}
-                        </span>
-                </td>
-                <td>
-                    <span *ngFor="let tags of seminar.tags; let last = last">
-                            <a class="form-control-static" [routerLink]="['../tag', tags?.id ]">{{tags.id}}</a>{{last ? '' : ', '}}
-                        </span>
                 </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">

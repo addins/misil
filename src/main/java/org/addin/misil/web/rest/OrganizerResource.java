@@ -1,13 +1,18 @@
 package org.addin.misil.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import org.addin.misil.domain.Organizer;
-
-import org.addin.misil.repository.OrganizerRepository;
+import org.addin.misil.service.OrganizerService;
 import org.addin.misil.web.rest.util.HeaderUtil;
+import org.addin.misil.web.rest.util.PaginationUtil;
+import org.addin.misil.service.dto.OrganizerDTO;
+import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,27 +34,27 @@ public class OrganizerResource {
 
     private static final String ENTITY_NAME = "organizer";
 
-    private final OrganizerRepository organizerRepository;
+    private final OrganizerService organizerService;
 
-    public OrganizerResource(OrganizerRepository organizerRepository) {
-        this.organizerRepository = organizerRepository;
+    public OrganizerResource(OrganizerService organizerService) {
+        this.organizerService = organizerService;
     }
 
     /**
      * POST  /organizers : Create a new organizer.
      *
-     * @param organizer the organizer to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new organizer, or with status 400 (Bad Request) if the organizer has already an ID
+     * @param organizerDTO the organizerDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new organizerDTO, or with status 400 (Bad Request) if the organizer has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/organizers")
     @Timed
-    public ResponseEntity<Organizer> createOrganizer(@Valid @RequestBody Organizer organizer) throws URISyntaxException {
-        log.debug("REST request to save Organizer : {}", organizer);
-        if (organizer.getId() != null) {
+    public ResponseEntity<OrganizerDTO> createOrganizer(@Valid @RequestBody OrganizerDTO organizerDTO) throws URISyntaxException {
+        log.debug("REST request to save Organizer : {}", organizerDTO);
+        if (organizerDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new organizer cannot already have an ID")).body(null);
         }
-        Organizer result = organizerRepository.save(organizer);
+        OrganizerDTO result = organizerService.save(organizerDTO);
         return ResponseEntity.created(new URI("/api/organizers/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -58,62 +63,65 @@ public class OrganizerResource {
     /**
      * PUT  /organizers : Updates an existing organizer.
      *
-     * @param organizer the organizer to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated organizer,
-     * or with status 400 (Bad Request) if the organizer is not valid,
-     * or with status 500 (Internal Server Error) if the organizer couldn't be updated
+     * @param organizerDTO the organizerDTO to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated organizerDTO,
+     * or with status 400 (Bad Request) if the organizerDTO is not valid,
+     * or with status 500 (Internal Server Error) if the organizerDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/organizers")
     @Timed
-    public ResponseEntity<Organizer> updateOrganizer(@Valid @RequestBody Organizer organizer) throws URISyntaxException {
-        log.debug("REST request to update Organizer : {}", organizer);
-        if (organizer.getId() == null) {
-            return createOrganizer(organizer);
+    public ResponseEntity<OrganizerDTO> updateOrganizer(@Valid @RequestBody OrganizerDTO organizerDTO) throws URISyntaxException {
+        log.debug("REST request to update Organizer : {}", organizerDTO);
+        if (organizerDTO.getId() == null) {
+            return createOrganizer(organizerDTO);
         }
-        Organizer result = organizerRepository.save(organizer);
+        OrganizerDTO result = organizerService.save(organizerDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, organizer.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, organizerDTO.getId().toString()))
             .body(result);
     }
 
     /**
      * GET  /organizers : get all the organizers.
      *
+     * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of organizers in body
      */
     @GetMapping("/organizers")
     @Timed
-    public List<Organizer> getAllOrganizers() {
-        log.debug("REST request to get all Organizers");
-        return organizerRepository.findAll();
+    public ResponseEntity<List<OrganizerDTO>> getAllOrganizers(@ApiParam Pageable pageable) {
+        log.debug("REST request to get a page of Organizers");
+        Page<OrganizerDTO> page = organizerService.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/organizers");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     /**
      * GET  /organizers/:id : get the "id" organizer.
      *
-     * @param id the id of the organizer to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the organizer, or with status 404 (Not Found)
+     * @param id the id of the organizerDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the organizerDTO, or with status 404 (Not Found)
      */
     @GetMapping("/organizers/{id}")
     @Timed
-    public ResponseEntity<Organizer> getOrganizer(@PathVariable Long id) {
+    public ResponseEntity<OrganizerDTO> getOrganizer(@PathVariable Long id) {
         log.debug("REST request to get Organizer : {}", id);
-        Organizer organizer = organizerRepository.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(organizer));
+        OrganizerDTO organizerDTO = organizerService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(organizerDTO));
     }
 
     /**
      * DELETE  /organizers/:id : delete the "id" organizer.
      *
-     * @param id the id of the organizer to delete
+     * @param id the id of the organizerDTO to delete
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/organizers/{id}")
     @Timed
     public ResponseEntity<Void> deleteOrganizer(@PathVariable Long id) {
         log.debug("REST request to delete Organizer : {}", id);
-        organizerRepository.delete(id);
+        organizerService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 }

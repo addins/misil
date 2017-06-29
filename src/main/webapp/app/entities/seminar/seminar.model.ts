@@ -1,7 +1,3 @@
-import { Place } from '../place';
-import { Organizer } from '../organizer';
-import { People } from '../people';
-import { Tag } from '../tag';
 export class Seminar {
     constructor(
         public id?: number,
@@ -10,12 +6,12 @@ export class Seminar {
         public endTime?: any,
         public canceled?: boolean,
         public published?: boolean,
-        public place?: Place,
-        public organizedBy?: Organizer,
-        public presenter?: People,
-        public attendees?: People,
-        public specialGuests?: People,
-        public tags?: Tag,
+        public placeId?: number,
+        public organizedById?: number,
+        public presenterId?: number,
+        public attendeesId?: number,
+        public specialGuestsId?: number,
+        public tagsId?: number,
     ) {
         this.canceled = false;
         this.published = false;

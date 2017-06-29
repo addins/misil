@@ -13,6 +13,7 @@ import {
     PlaceDeleteDialogComponent,
     placeRoute,
     placePopupRoute,
+    PlaceResolvePagingParams,
 } from './';
 
 const ENTITY_STATES = [
@@ -43,6 +44,7 @@ const ENTITY_STATES = [
     providers: [
         PlaceService,
         PlacePopupService,
+        PlaceResolvePagingParams,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

@@ -14,6 +14,7 @@ import {
     PeopleDeleteDialogComponent,
     peopleRoute,
     peoplePopupRoute,
+    PeopleResolvePagingParams,
 } from './';
 
 const ENTITY_STATES = [
@@ -45,6 +46,7 @@ const ENTITY_STATES = [
     providers: [
         PeopleService,
         PeoplePopupService,
+        PeopleResolvePagingParams,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

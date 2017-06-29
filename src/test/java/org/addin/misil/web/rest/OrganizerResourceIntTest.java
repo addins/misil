@@ -5,6 +5,9 @@ import org.addin.misil.MisilApp;
 import org.addin.misil.domain.Organizer;
 import org.addin.misil.domain.People;
 import org.addin.misil.repository.OrganizerRepository;
+import org.addin.misil.service.OrganizerService;
+import org.addin.misil.service.dto.OrganizerDTO;
+import org.addin.misil.service.mapper.OrganizerMapper;
 import org.addin.misil.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -45,6 +48,12 @@ public class OrganizerResourceIntTest {
     private OrganizerRepository organizerRepository;
 
     @Autowired
+    private OrganizerMapper organizerMapper;
+
+    @Autowired
+    private OrganizerService organizerService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -63,7 +72,7 @@ public class OrganizerResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        OrganizerResource organizerResource = new OrganizerResource(organizerRepository);
+        OrganizerResource organizerResource = new OrganizerResource(organizerService);
         this.restOrganizerMockMvc = MockMvcBuilders.standaloneSetup(organizerResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -98,9 +107,10 @@ public class OrganizerResourceIntTest {
         int databaseSizeBeforeCreate = organizerRepository.findAll().size();
 
         // Create the Organizer
+        OrganizerDTO organizerDTO = organizerMapper.toDto(organizer);
         restOrganizerMockMvc.perform(post("/api/organizers")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(organizer)))
+            .content(TestUtil.convertObjectToJsonBytes(organizerDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Organizer in the database
@@ -117,11 +127,12 @@ public class OrganizerResourceIntTest {
 
         // Create the Organizer with an existing ID
         organizer.setId(1L);
+        OrganizerDTO organizerDTO = organizerMapper.toDto(organizer);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restOrganizerMockMvc.perform(post("/api/organizers")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(organizer)))
+            .content(TestUtil.convertObjectToJsonBytes(organizerDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
@@ -137,10 +148,11 @@ public class OrganizerResourceIntTest {
         organizer.setName(null);
 
         // Create the Organizer, which fails.
+        OrganizerDTO organizerDTO = organizerMapper.toDto(organizer);
 
         restOrganizerMockMvc.perform(post("/api/organizers")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(organizer)))
+            .content(TestUtil.convertObjectToJsonBytes(organizerDTO)))
             .andExpect(status().isBadRequest());
 
         List<Organizer> organizerList = organizerRepository.findAll();
@@ -194,10 +206,11 @@ public class OrganizerResourceIntTest {
         Organizer updatedOrganizer = organizerRepository.findOne(organizer.getId());
         updatedOrganizer
             .name(UPDATED_NAME);
+        OrganizerDTO organizerDTO = organizerMapper.toDto(updatedOrganizer);
 
         restOrganizerMockMvc.perform(put("/api/organizers")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedOrganizer)))
+            .content(TestUtil.convertObjectToJsonBytes(organizerDTO)))
             .andExpect(status().isOk());
 
         // Validate the Organizer in the database
@@ -213,11 +226,12 @@ public class OrganizerResourceIntTest {
         int databaseSizeBeforeUpdate = organizerRepository.findAll().size();
 
         // Create the Organizer
+        OrganizerDTO organizerDTO = organizerMapper.toDto(organizer);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restOrganizerMockMvc.perform(put("/api/organizers")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(organizer)))
+            .content(TestUtil.convertObjectToJsonBytes(organizerDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Organizer in the database
@@ -255,5 +269,28 @@ public class OrganizerResourceIntTest {
         assertThat(organizer1).isNotEqualTo(organizer2);
         organizer1.setId(null);
         assertThat(organizer1).isNotEqualTo(organizer2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(OrganizerDTO.class);
+        OrganizerDTO organizerDTO1 = new OrganizerDTO();
+        organizerDTO1.setId(1L);
+        OrganizerDTO organizerDTO2 = new OrganizerDTO();
+        assertThat(organizerDTO1).isNotEqualTo(organizerDTO2);
+        organizerDTO2.setId(organizerDTO1.getId());
+        assertThat(organizerDTO1).isEqualTo(organizerDTO2);
+        organizerDTO2.setId(2L);
+        assertThat(organizerDTO1).isNotEqualTo(organizerDTO2);
+        organizerDTO1.setId(null);
+        assertThat(organizerDTO1).isNotEqualTo(organizerDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(organizerMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(organizerMapper.fromId(null)).isNull();
     }
 }

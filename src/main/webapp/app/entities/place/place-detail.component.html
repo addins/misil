@@ -12,6 +12,12 @@
         <dd>
             <span>{{place.address}}</span>
         </dd>
+        <dt><span jhiTranslate="misilApp.place.organizedBy">Organized By</span></dt>
+        <dd>
+            <div *ngIf="place.organizedById">
+                <a [routerLink]="['/organizer', place.organizedById]">{{place.organizedById}}</a>
+            </div>
+        </dd>
     </dl>
 
     <button type="submit"

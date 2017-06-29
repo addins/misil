@@ -20,7 +20,7 @@
     ],
     "changelogDate": "20170618120128",
     "entityTableName": "tag",
-    "dto": "no",
-    "pagination": "no",
-    "service": "no"
+    "dto": "mapstruct",
+    "pagination": "pager",
+    "service": "serviceImpl"
 }

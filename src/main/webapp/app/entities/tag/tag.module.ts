@@ -13,6 +13,7 @@ import {
     TagDeleteDialogComponent,
     tagRoute,
     tagPopupRoute,
+    TagResolvePagingParams,
 } from './';
 
 const ENTITY_STATES = [
@@ -43,6 +44,7 @@ const ENTITY_STATES = [
     providers: [
         TagService,
         TagPopupService,
+        TagResolvePagingParams,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

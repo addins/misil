@@ -26,20 +26,20 @@
         </dd>
         <dt><span jhiTranslate="misilApp.seminar.place">Place</span></dt>
         <dd>
-            <div *ngIf="seminar.place">
-                <a [routerLink]="['/place', seminar.place?.id]">{{seminar.place?.id}}</a>
+            <div *ngIf="seminar.placeId">
+                <a [routerLink]="['/place', seminar.placeId]">{{seminar.placeId}}</a>
             </div>
         </dd>
         <dt><span jhiTranslate="misilApp.seminar.organizedBy">Organized By</span></dt>
         <dd>
-            <div *ngIf="seminar.organizedBy">
-                <a [routerLink]="['/organizer', seminar.organizedBy?.id]">{{seminar.organizedBy?.id}}</a>
+            <div *ngIf="seminar.organizedById">
+                <a [routerLink]="['/organizer', seminar.organizedById]">{{seminar.organizedById}}</a>
             </div>
         </dd>
         <dt><span jhiTranslate="misilApp.seminar.presenter">Presenter</span></dt>
         <dd>
-            <div *ngIf="seminar.presenter">
-                <a [routerLink]="['/people', seminar.presenter?.id]">{{seminar.presenter?.id}}</a>
+            <div *ngIf="seminar.presenterId">
+                <a [routerLink]="['/people', seminar.presenterId]">{{seminar.presenterId}}</a>
             </div>
         </dd>
         <dt><span jhiTranslate="misilApp.seminar.attendees">Attendees</span></dt>

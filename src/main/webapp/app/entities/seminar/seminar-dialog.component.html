@@ -70,23 +70,23 @@
 
         <div class="form-group">
             <label jhiTranslate="misilApp.seminar.place" for="field_place">Place</label>
-            <select class="form-control" id="field_place" name="place" [(ngModel)]="seminar.place" >
+            <select class="form-control" id="field_place" name="place" [(ngModel)]="seminar.placeId" >
                 <option [ngValue]="null"></option>
-                <option [ngValue]="placeOption.id === seminar.place?.id ? seminar.place : placeOption" *ngFor="let placeOption of places; trackBy: trackPlaceById">{{placeOption.id}}</option>
+                <option [ngValue]="placeOption.id" *ngFor="let placeOption of places; trackBy: trackPlaceById">{{placeOption.id}}</option>
             </select>
         </div>
         <div class="form-group">
             <label jhiTranslate="misilApp.seminar.organizedBy" for="field_organizedBy">Organized By</label>
-            <select class="form-control" id="field_organizedBy" name="organizedBy" [(ngModel)]="seminar.organizedBy" >
+            <select class="form-control" id="field_organizedBy" name="organizedBy" [(ngModel)]="seminar.organizedById" >
                 <option [ngValue]="null"></option>
-                <option [ngValue]="organizerOption.id === seminar.organizedBy?.id ? seminar.organizedBy : organizerOption" *ngFor="let organizerOption of organizers; trackBy: trackOrganizerById">{{organizerOption.id}}</option>
+                <option [ngValue]="organizerOption.id" *ngFor="let organizerOption of organizers; trackBy: trackOrganizerById">{{organizerOption.id}}</option>
             </select>
         </div>
         <div class="form-group">
             <label jhiTranslate="misilApp.seminar.presenter" for="field_presenter">Presenter</label>
-            <select class="form-control" id="field_presenter" name="presenter" [(ngModel)]="seminar.presenter" >
+            <select class="form-control" id="field_presenter" name="presenter" [(ngModel)]="seminar.presenterId" >
                 <option [ngValue]="null"></option>
-                <option [ngValue]="peopleOption.id === seminar.presenter?.id ? seminar.presenter : peopleOption" *ngFor="let peopleOption of people; trackBy: trackPeopleById">{{peopleOption.id}}</option>
+                <option [ngValue]="peopleOption.id" *ngFor="let peopleOption of people; trackBy: trackPeopleById">{{peopleOption.id}}</option>
             </select>
         </div>
         <div class="form-group">

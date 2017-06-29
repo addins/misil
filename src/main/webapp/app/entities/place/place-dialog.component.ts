@@ -9,6 +9,8 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { Place } from './place.model';
 import { PlacePopupService } from './place-popup.service';
 import { PlaceService } from './place.service';
+import { Organizer, OrganizerService } from '../organizer';
+import { ResponseWrapper } from '../../shared';
 
 @Component({
     selector: 'jhi-place-dialog',
@@ -20,10 +22,13 @@ export class PlaceDialogComponent implements OnInit {
     authorities: any[];
     isSaving: boolean;
 
+    organizers: Organizer[];
+
     constructor(
         public activeModal: NgbActiveModal,
         private alertService: JhiAlertService,
         private placeService: PlaceService,
+        private organizerService: OrganizerService,
         private eventManager: JhiEventManager
     ) {
     }
@@ -31,6 +36,8 @@ export class PlaceDialogComponent implements OnInit {
     ngOnInit() {
         this.isSaving = false;
         this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
+        this.organizerService.query()
+            .subscribe((res: ResponseWrapper) => { this.organizers = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
 
     clear() {
@@ -76,6 +83,10 @@ export class PlaceDialogComponent implements OnInit {
 
     private onError(error) {
         this.alertService.error(error.message, null, null);
+    }
+
+    trackOrganizerById(index: number, item: Organizer) {
+        return item.id;
     }
 }
 

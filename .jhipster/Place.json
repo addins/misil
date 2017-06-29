@@ -2,8 +2,14 @@
     "fluentMethods": true,
     "relationships": [
         {
+            "relationshipType": "many-to-one",
+            "relationshipName": "organizedBy",
+            "otherEntityName": "organizer",
+            "otherEntityField": "id"
+        },
+        {
             "relationshipType": "one-to-many",
-            "relationshipName": "seminars",
+            "relationshipName": "events",
             "otherEntityName": "seminar",
             "otherEntityRelationshipName": "place"
         }
@@ -23,7 +29,7 @@
     ],
     "changelogDate": "20170618120126",
     "entityTableName": "place",
-    "dto": "no",
-    "pagination": "no",
-    "service": "no"
+    "dto": "mapstruct",
+    "pagination": "pager",
+    "service": "serviceImpl"
 }

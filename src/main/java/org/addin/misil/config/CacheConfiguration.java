@@ -54,6 +54,8 @@ public class CacheConfiguration {
             cm.createCache(org.addin.misil.domain.Seminar.class.getName() + ".attendees", jcacheConfiguration);
             cm.createCache(org.addin.misil.domain.Seminar.class.getName() + ".specialGuests", jcacheConfiguration);
             cm.createCache(org.addin.misil.domain.Seminar.class.getName() + ".tags", jcacheConfiguration);
+            cm.createCache(org.addin.misil.domain.Place.class.getName() + ".events", jcacheConfiguration);
+            cm.createCache(org.addin.misil.domain.Organizer.class.getName() + ".places", jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

@@ -10,8 +10,8 @@
         </dd>
         <dt><span jhiTranslate="misilApp.organizer.pic">Pic</span></dt>
         <dd>
-            <div *ngIf="organizer.pic">
-                <a [routerLink]="['/people', organizer.pic?.id]">{{organizer.pic?.id}}</a>
+            <div *ngIf="organizer.picId">
+                <a [routerLink]="['/people', organizer.picId]">{{organizer.picId}}</a>
             </div>
         </dd>
     </dl>

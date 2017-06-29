@@ -11,10 +11,29 @@ import { OrganizerDeletePopupComponent } from './organizer-delete-dialog.compone
 
 import { Principal } from '../../shared';
 
+@Injectable()
+export class OrganizerResolvePagingParams implements Resolve<any> {
+
+    constructor(private paginationUtil: JhiPaginationUtil) {}
+
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+        const page = route.queryParams['page'] ? route.queryParams['page'] : '1';
+        const sort = route.queryParams['sort'] ? route.queryParams['sort'] : 'id,asc';
+        return {
+            page: this.paginationUtil.parsePage(page),
+            predicate: this.paginationUtil.parsePredicate(sort),
+            ascending: this.paginationUtil.parseAscending(sort)
+      };
+    }
+}
+
 export const organizerRoute: Routes = [
     {
         path: 'organizer',
         component: OrganizerComponent,
+        resolve: {
+            'pagingParams': OrganizerResolvePagingParams
+        },
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'misilApp.organizer.home.title'

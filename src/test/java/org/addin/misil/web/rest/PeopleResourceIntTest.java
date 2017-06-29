@@ -5,6 +5,9 @@ import org.addin.misil.MisilApp;
 import org.addin.misil.domain.People;
 import org.addin.misil.domain.User;
 import org.addin.misil.repository.PeopleRepository;
+import org.addin.misil.service.PeopleService;
+import org.addin.misil.service.dto.PeopleDTO;
+import org.addin.misil.service.mapper.PeopleMapper;
 import org.addin.misil.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -48,6 +51,12 @@ public class PeopleResourceIntTest {
     private PeopleRepository peopleRepository;
 
     @Autowired
+    private PeopleMapper peopleMapper;
+
+    @Autowired
+    private PeopleService peopleService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -66,7 +75,7 @@ public class PeopleResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        PeopleResource peopleResource = new PeopleResource(peopleRepository);
+        PeopleResource peopleResource = new PeopleResource(peopleService);
         this.restPeopleMockMvc = MockMvcBuilders.standaloneSetup(peopleResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -102,9 +111,10 @@ public class PeopleResourceIntTest {
         int databaseSizeBeforeCreate = peopleRepository.findAll().size();
 
         // Create the People
+        PeopleDTO peopleDTO = peopleMapper.toDto(people);
         restPeopleMockMvc.perform(post("/api/people")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(people)))
+            .content(TestUtil.convertObjectToJsonBytes(peopleDTO)))
             .andExpect(status().isCreated());
 
         // Validate the People in the database
@@ -122,11 +132,12 @@ public class PeopleResourceIntTest {
 
         // Create the People with an existing ID
         people.setId(1L);
+        PeopleDTO peopleDTO = peopleMapper.toDto(people);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restPeopleMockMvc.perform(post("/api/people")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(people)))
+            .content(TestUtil.convertObjectToJsonBytes(peopleDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
@@ -184,10 +195,11 @@ public class PeopleResourceIntTest {
         updatedPeople
             .externalId(UPDATED_EXTERNAL_ID)
             .phone(UPDATED_PHONE);
+        PeopleDTO peopleDTO = peopleMapper.toDto(updatedPeople);
 
         restPeopleMockMvc.perform(put("/api/people")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedPeople)))
+            .content(TestUtil.convertObjectToJsonBytes(peopleDTO)))
             .andExpect(status().isOk());
 
         // Validate the People in the database
@@ -204,11 +216,12 @@ public class PeopleResourceIntTest {
         int databaseSizeBeforeUpdate = peopleRepository.findAll().size();
 
         // Create the People
+        PeopleDTO peopleDTO = peopleMapper.toDto(people);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restPeopleMockMvc.perform(put("/api/people")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(people)))
+            .content(TestUtil.convertObjectToJsonBytes(peopleDTO)))
             .andExpect(status().isCreated());
 
         // Validate the People in the database
@@ -246,5 +259,28 @@ public class PeopleResourceIntTest {
         assertThat(people1).isNotEqualTo(people2);
         people1.setId(null);
         assertThat(people1).isNotEqualTo(people2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(PeopleDTO.class);
+        PeopleDTO peopleDTO1 = new PeopleDTO();
+        peopleDTO1.setId(1L);
+        PeopleDTO peopleDTO2 = new PeopleDTO();
+        assertThat(peopleDTO1).isNotEqualTo(peopleDTO2);
+        peopleDTO2.setId(peopleDTO1.getId());
+        assertThat(peopleDTO1).isEqualTo(peopleDTO2);
+        peopleDTO2.setId(2L);
+        assertThat(peopleDTO1).isNotEqualTo(peopleDTO2);
+        peopleDTO1.setId(null);
+        assertThat(peopleDTO1).isNotEqualTo(peopleDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(peopleMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(peopleMapper.fromId(null)).isNull();
     }
 }

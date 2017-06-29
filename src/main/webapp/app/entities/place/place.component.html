@@ -15,10 +15,11 @@
     <div class="table-responsive" *ngIf="places">
         <table class="table table-striped">
             <thead>
-            <tr>
-            <th><span jhiTranslate="global.field.id">ID</span></th>
-            <th><span jhiTranslate="misilApp.place.name">Name</span></th>
-            <th><span jhiTranslate="misilApp.place.address">Address</span></th>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="name"><span jhiTranslate="misilApp.place.name">Name</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="address"><span jhiTranslate="misilApp.place.address">Address</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="organizedById"><span jhiTranslate="misilApp.place.organizedBy">Organized By</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
             </thead>
@@ -27,6 +28,11 @@
                 <td><a [routerLink]="['../place', place.id ]">{{place.id}}</a></td>
                 <td>{{place.name}}</td>
                 <td>{{place.address}}</td>
+                <td>
+                    <div *ngIf="place.organizedById">
+                        <a [routerLink]="['../organizer', place.organizedById  ]" >{{place.organizedById}}</a>
+                    </div>
+                </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
@@ -55,4 +61,13 @@
             </tbody>
         </table>
     </div>
+        <!-- Pager is not implemented yet, so this is normal pagination instead -->
+        <div *ngIf="places && places.length">
+            <div class="row justify-content-center">
+                <jhi-item-count [page]="page" [total]="queryCount" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+            </div>
+            <div class="row justify-content-center">
+                <ngb-pagination [collectionSize]="totalItems" [(page)]="page"  (pageChange)="loadPage(page)"></ngb-pagination>
+            </div>
+        </div>
 </div>

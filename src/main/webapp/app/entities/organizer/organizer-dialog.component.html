@@ -26,8 +26,8 @@
 
         <div class="form-group">
             <label jhiTranslate="misilApp.organizer.pic" for="field_pic">Pic</label>
-            <select class="form-control" id="field_pic" name="pic" [(ngModel)]="organizer.pic"  required>
-                <option [ngValue]="peopleOption.id === organizer.pic?.id ? organizer.pic : peopleOption" *ngFor="let peopleOption of people; trackBy: trackPeopleById">{{peopleOption.id}}</option>
+            <select class="form-control" id="field_pic" name="pic" [(ngModel)]="organizer.picId"  required>
+                <option [ngValue]="peopleOption.id" *ngFor="let peopleOption of people; trackBy: trackPeopleById">{{peopleOption.id}}</option>
             </select>
         </div>
         <div [hidden]="!(editForm.controls.pic?.dirty && editForm.controls.pic?.invalid)">
