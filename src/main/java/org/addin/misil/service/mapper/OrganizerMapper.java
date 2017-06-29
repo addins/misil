@@ -12,12 +12,13 @@ import org.mapstruct.*;
 public interface OrganizerMapper extends EntityMapper <OrganizerDTO, Organizer> {
 
     @Mapping(source = "pic.id", target = "picId")
-    OrganizerDTO toDto(Organizer organizer); 
+    @Mapping(target = "picName", expression = "java(peopleMapper.peopleName(organizer.getPic()))")
+    OrganizerDTO toDto(Organizer organizer);
 
     @Mapping(source = "picId", target = "pic")
     @Mapping(target = "seminarsOrganizeds", ignore = true)
     @Mapping(target = "places", ignore = true)
-    Organizer toEntity(OrganizerDTO organizerDTO); 
+    Organizer toEntity(OrganizerDTO organizerDTO);
     default Organizer fromId(Long id) {
         if (id == null) {
             return null;

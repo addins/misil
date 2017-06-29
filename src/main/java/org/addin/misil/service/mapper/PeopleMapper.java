@@ -12,13 +12,15 @@ import org.mapstruct.*;
 public interface PeopleMapper extends EntityMapper <PeopleDTO, People> {
 
     @Mapping(source = "user.id", target = "userId")
-    PeopleDTO toDto(People people); 
+    @Mapping(source = "user.firstName", target = "userFirstName")
+    @Mapping(source = "user.lastName", target = "userLastName")
+    PeopleDTO toDto(People people);
 
     @Mapping(source = "userId", target = "user")
     @Mapping(target = "seminarsPresenteds", ignore = true)
     @Mapping(target = "seminarsAttendeds", ignore = true)
     @Mapping(target = "specialGuestAts", ignore = true)
-    People toEntity(PeopleDTO peopleDTO); 
+    People toEntity(PeopleDTO peopleDTO);
     default People fromId(Long id) {
         if (id == null) {
             return null;
@@ -26,5 +28,24 @@ public interface PeopleMapper extends EntityMapper <PeopleDTO, People> {
         People people = new People();
         people.setId(id);
         return people;
+    }
+
+    default String peopleName(People people) {
+        String name = "";
+        if (people == null) {
+            return null;
+        }
+        if (people.getUser() == null) {
+            return null;
+        }
+        String firstName = people.getUser().getFirstName();
+        if (firstName != null) {
+            name += firstName;
+        }
+        String lastName = people.getUser().getLastName();
+        if (lastName != null) {
+            name += " " + lastName;
+        }
+        return name;
     }
 }

@@ -19,6 +19,8 @@ public class OrganizerDTO implements Serializable {
 
     private Long picId;
 
+    private String picName;
+
     public Long getId() {
         return id;
     }
@@ -41,6 +43,14 @@ public class OrganizerDTO implements Serializable {
 
     public void setPicId(Long peopleId) {
         this.picId = peopleId;
+    }
+
+    public String getPicName() {
+        return picName;
+    }
+
+    public void setPicName(String picName) {
+        this.picName = picName;
     }
 
     @Override

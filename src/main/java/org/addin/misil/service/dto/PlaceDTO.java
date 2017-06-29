@@ -21,6 +21,8 @@ public class PlaceDTO implements Serializable {
 
     private Long organizedById;
 
+    private String organizerName;
+
     public Long getId() {
         return id;
     }
@@ -51,6 +53,14 @@ public class PlaceDTO implements Serializable {
 
     public void setOrganizedById(Long organizerId) {
         this.organizedById = organizerId;
+    }
+
+    public String getOrganizerName() {
+        return organizerName;
+    }
+
+    public void setOrganizerName(String organizerName) {
+        this.organizerName = organizerName;
     }
 
     @Override

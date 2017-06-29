@@ -18,7 +18,7 @@
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
             <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="name"><span jhiTranslate="misilApp.organizer.name">Name</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="picId"><span jhiTranslate="misilApp.organizer.pic">Pic</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="pic.user.firstName"><span jhiTranslate="misilApp.organizer.pic">Pic</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
             </thead>
@@ -28,7 +28,7 @@
                 <td>{{organizer.name}}</td>
                 <td>
                     <div *ngIf="organizer.picId">
-                        <a [routerLink]="['../people', organizer.picId  ]" >{{organizer.picId}}</a>
+                        <a [routerLink]="['../people', organizer.picId  ]" >{{organizer.picName}}</a>
                     </div>
                 </td>
                 <td class="text-right">

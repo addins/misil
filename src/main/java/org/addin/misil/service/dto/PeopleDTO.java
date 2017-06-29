@@ -20,6 +20,10 @@ public class PeopleDTO implements Serializable {
 
     private Long userId;
 
+    private String userFirstName;
+
+    private String userLastName;
+
     public Long getId() {
         return id;
     }
@@ -50,6 +54,22 @@ public class PeopleDTO implements Serializable {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public String getUserFirstName() {
+        return this.userFirstName;
+    }
+
+    public void setUserFirstName(String userFirstName) {
+        this.userFirstName = userFirstName;
+    }
+
+    public String getUserLastName() {
+        return this.userLastName;
+    }
+
+    public void setUserLastName(String userLastName) {
+        this.userLastName = userLastName;
     }
 
     @Override

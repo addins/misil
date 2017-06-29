@@ -12,6 +12,7 @@ import org.mapstruct.*;
 public interface PlaceMapper extends EntityMapper <PlaceDTO, Place> {
 
     @Mapping(source = "organizedBy.id", target = "organizedById")
+    @Mapping(source = "organizedBy.name", target = "organizerName")
     PlaceDTO toDto(Place place); 
 
     @Mapping(source = "organizedById", target = "organizedBy")

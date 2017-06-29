@@ -26,7 +26,7 @@
         <div class="form-group">
             <label jhiTranslate="misilApp.people.user" for="field_user">User</label>
             <select class="form-control" id="field_user" name="user" [(ngModel)]="people.userId"  required>
-                <option [ngValue]="userOption.id" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.id}}</option>
+                <option [ngValue]="userOption.id" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.firstName + ' ' + userOption.lastName}}</option>
             </select>
         </div>
         <div [hidden]="!(editForm.controls.user?.dirty && editForm.controls.user?.invalid)">

@@ -30,7 +30,7 @@
                 <td>{{place.address}}</td>
                 <td>
                     <div *ngIf="place.organizedById">
-                        <a [routerLink]="['../organizer', place.organizedById  ]" >{{place.organizedById}}</a>
+                        <a [routerLink]="['../organizer', place.organizedById  ]" >{{place.organizerName}}</a>
                     </div>
                 </td>
                 <td class="text-right">

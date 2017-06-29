@@ -27,37 +27,37 @@
         <dt><span jhiTranslate="misilApp.seminar.place">Place</span></dt>
         <dd>
             <div *ngIf="seminar.placeId">
-                <a [routerLink]="['/place', seminar.placeId]">{{seminar.placeId}}</a>
+                <a [routerLink]="['/place', seminar.placeId]">{{seminar.placeName}}</a>
             </div>
         </dd>
         <dt><span jhiTranslate="misilApp.seminar.organizedBy">Organized By</span></dt>
         <dd>
             <div *ngIf="seminar.organizedById">
-                <a [routerLink]="['/organizer', seminar.organizedById]">{{seminar.organizedById}}</a>
+                <a [routerLink]="['/organizer', seminar.organizedById]">{{seminar.organizerName}}</a>
             </div>
         </dd>
         <dt><span jhiTranslate="misilApp.seminar.presenter">Presenter</span></dt>
         <dd>
             <div *ngIf="seminar.presenterId">
-                <a [routerLink]="['/people', seminar.presenterId]">{{seminar.presenterId}}</a>
+                <a [routerLink]="['/people', seminar.presenterId]">{{seminar.presenterName}}</a>
             </div>
         </dd>
         <dt><span jhiTranslate="misilApp.seminar.attendees">Attendees</span></dt>
         <dd>
             <span *ngFor="let attendees of seminar.attendees; let last = last">
-                <a [routerLink]="['/people', attendees?.id ]">{{attendees.id}}</a>{{last ? '' : ', '}}
+                <a [routerLink]="['/people', attendees?.id ]">{{attendees.userFirstName + ' ' + attendees.userLastName}}</a>{{last ? '' : ', '}}
             </span>
         </dd>
         <dt><span jhiTranslate="misilApp.seminar.specialGuests">Special Guests</span></dt>
         <dd>
             <span *ngFor="let specialGuests of seminar.specialGuests; let last = last">
-                <a [routerLink]="['/people', specialGuests?.id ]">{{specialGuests.id}}</a>{{last ? '' : ', '}}
+                <a [routerLink]="['/people', specialGuests?.id ]">{{specialGuests.userFirstName + ' ' + specialGuests.userLastName}}</a>{{last ? '' : ', '}}
             </span>
         </dd>
         <dt><span jhiTranslate="misilApp.seminar.tags">Tags</span></dt>
         <dd>
             <span *ngFor="let tags of seminar.tags; let last = last">
-                <a [routerLink]="['/tag', tags?.id ]">{{tags.id}}</a>{{last ? '' : ', '}}
+                <a [routerLink]="['/tag', tags?.id ]">{{tags.name}}</a>{{last ? '' : ', '}}
             </span>
         </dd>
     </dl>

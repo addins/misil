@@ -30,9 +30,15 @@ public class SeminarDTO implements Serializable {
 
     private Long placeId;
 
+    private String placeName;
+
     private Long organizedById;
 
+    private String organizerName;
+
     private Long presenterId;
+
+    private String presenterName;
 
     private Set<PeopleDTO> attendees = new HashSet<>();
 
@@ -134,6 +140,30 @@ public class SeminarDTO implements Serializable {
 
     public void setTags(Set<TagDTO> tags) {
         this.tags = tags;
+    }
+
+    public String getPlaceName() {
+        return placeName;
+    }
+
+    public void setPlaceName(String placeName) {
+        this.placeName = placeName;
+    }
+
+    public String getOrganizerName() {
+        return organizerName;
+    }
+
+    public void setOrganizerName(String organizerName) {
+        this.organizerName = organizerName;
+    }
+
+    public String getPresenterName() {
+        return presenterName;
+    }
+
+    public void setPresenterName(String presenterName) {
+        this.presenterName = presenterName;
     }
 
     @Override

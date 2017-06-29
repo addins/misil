@@ -11,7 +11,7 @@
         <dt><span jhiTranslate="misilApp.organizer.pic">Pic</span></dt>
         <dd>
             <div *ngIf="organizer.picId">
-                <a [routerLink]="['/people', organizer.picId]">{{organizer.picId}}</a>
+                <a [routerLink]="['/people', organizer.picId]">{{organizer.picName}}</a>
             </div>
         </dd>
     </dl>

@@ -22,9 +22,9 @@
             <th jhiSortBy="endTime"><span jhiTranslate="misilApp.seminar.endTime">End Time</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="canceled"><span jhiTranslate="misilApp.seminar.canceled">Canceled</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="published"><span jhiTranslate="misilApp.seminar.published">Published</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="placeId"><span jhiTranslate="misilApp.seminar.place">Place</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="organizedById"><span jhiTranslate="misilApp.seminar.organizedBy">Organized By</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="presenterId"><span jhiTranslate="misilApp.seminar.presenter">Presenter</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="place.name"><span jhiTranslate="misilApp.seminar.place">Place</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="organizedBy.name"><span jhiTranslate="misilApp.seminar.organizedBy">Organized By</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="presenter.user.firstName"><span jhiTranslate="misilApp.seminar.presenter">Presenter</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
             </thead>
@@ -38,17 +38,17 @@
                 <td>{{seminar.published}}</td>
                 <td>
                     <div *ngIf="seminar.placeId">
-                        <a [routerLink]="['../place', seminar.placeId  ]" >{{seminar.placeId}}</a>
+                        <a [routerLink]="['../place', seminar.placeId  ]" >{{seminar.placeName}}</a>
                     </div>
                 </td>
                 <td>
                     <div *ngIf="seminar.organizedById">
-                        <a [routerLink]="['../organizer', seminar.organizedById  ]" >{{seminar.organizedById}}</a>
+                        <a [routerLink]="['../organizer', seminar.organizedById  ]" >{{seminar.organizerName}}</a>
                     </div>
                 </td>
                 <td>
                     <div *ngIf="seminar.presenterId">
-                        <a [routerLink]="['../people', seminar.presenterId  ]" >{{seminar.presenterId}}</a>
+                        <a [routerLink]="['../people', seminar.presenterId  ]" >{{seminar.presenterName}}</a>
                     </div>
                 </td>
                 <td class="text-right">

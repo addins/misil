@@ -12,18 +12,19 @@ import org.mapstruct.*;
 public interface SeminarMapper extends EntityMapper <SeminarDTO, Seminar> {
 
     @Mapping(source = "place.id", target = "placeId")
-
+    @Mapping(source = "place.name", target = "placeName")
     @Mapping(source = "organizedBy.id", target = "organizedById")
-
+    @Mapping(source = "organizedBy.name", target = "organizerName")
     @Mapping(source = "presenter.id", target = "presenterId")
-    SeminarDTO toDto(Seminar seminar); 
+    @Mapping(target = "presenterName", expression = "java(peopleMapper.peopleName(seminar.getPresenter()))")
+    SeminarDTO toDto(Seminar seminar);
 
     @Mapping(source = "placeId", target = "place")
 
     @Mapping(source = "organizedById", target = "organizedBy")
 
     @Mapping(source = "presenterId", target = "presenter")
-    Seminar toEntity(SeminarDTO seminarDTO); 
+    Seminar toEntity(SeminarDTO seminarDTO);
     default Seminar fromId(Long id) {
         if (id == null) {
             return null;

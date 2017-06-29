@@ -15,7 +15,7 @@
         <dt><span jhiTranslate="misilApp.place.organizedBy">Organized By</span></dt>
         <dd>
             <div *ngIf="place.organizedById">
-                <a [routerLink]="['/organizer', place.organizedById]">{{place.organizedById}}</a>
+                <a [routerLink]="['/organizer', place.organizedById]">{{place.organizerName}}</a>
             </div>
         </dd>
     </dl>

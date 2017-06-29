@@ -72,39 +72,39 @@
             <label jhiTranslate="misilApp.seminar.place" for="field_place">Place</label>
             <select class="form-control" id="field_place" name="place" [(ngModel)]="seminar.placeId" >
                 <option [ngValue]="null"></option>
-                <option [ngValue]="placeOption.id" *ngFor="let placeOption of places; trackBy: trackPlaceById">{{placeOption.id}}</option>
+                <option [ngValue]="placeOption.id" *ngFor="let placeOption of places; trackBy: trackPlaceById">{{placeOption.name}}</option>
             </select>
         </div>
         <div class="form-group">
             <label jhiTranslate="misilApp.seminar.organizedBy" for="field_organizedBy">Organized By</label>
             <select class="form-control" id="field_organizedBy" name="organizedBy" [(ngModel)]="seminar.organizedById" >
                 <option [ngValue]="null"></option>
-                <option [ngValue]="organizerOption.id" *ngFor="let organizerOption of organizers; trackBy: trackOrganizerById">{{organizerOption.id}}</option>
+                <option [ngValue]="organizerOption.id" *ngFor="let organizerOption of organizers; trackBy: trackOrganizerById">{{organizerOption.name}}</option>
             </select>
         </div>
         <div class="form-group">
             <label jhiTranslate="misilApp.seminar.presenter" for="field_presenter">Presenter</label>
             <select class="form-control" id="field_presenter" name="presenter" [(ngModel)]="seminar.presenterId" >
                 <option [ngValue]="null"></option>
-                <option [ngValue]="peopleOption.id" *ngFor="let peopleOption of people; trackBy: trackPeopleById">{{peopleOption.id}}</option>
+                <option [ngValue]="peopleOption.id" *ngFor="let peopleOption of people; trackBy: trackPeopleById">{{peopleOption.userFirstName + ' ' + peopleOption.userLastName}}</option>
             </select>
         </div>
         <div class="form-group">
             <label jhiTranslate="misilApp.seminar.attendees" for="field_attendees">Attendees</label>
             <select class="form-control" id="field_attendees" multiple name="attendees" [(ngModel)]="seminar.attendees">
-                <option [ngValue]="getSelected(seminar.attendees, peopleOption)" *ngFor="let peopleOption of people; trackBy: trackPeopleById">{{peopleOption.id}}</option>
+                <option [ngValue]="getSelected(seminar.attendees, peopleOption)" *ngFor="let peopleOption of people; trackBy: trackPeopleById">{{peopleOption.userFirstName + ' ' + peopleOption.userLastName}}</option>
             </select>
         </div>
         <div class="form-group">
             <label jhiTranslate="misilApp.seminar.specialGuests" for="field_specialGuests">Special Guests</label>
             <select class="form-control" id="field_specialGuests" multiple name="specialGuests" [(ngModel)]="seminar.specialGuests">
-                <option [ngValue]="getSelected(seminar.specialGuests, peopleOption)" *ngFor="let peopleOption of people; trackBy: trackPeopleById">{{peopleOption.id}}</option>
+                <option [ngValue]="getSelected(seminar.specialGuests, peopleOption)" *ngFor="let peopleOption of people; trackBy: trackPeopleById">{{peopleOption.userFirstName + ' ' + peopleOption.userLastName}}</option>
             </select>
         </div>
         <div class="form-group">
             <label jhiTranslate="misilApp.seminar.tags" for="field_tags">Tags</label>
             <select class="form-control" id="field_tags" multiple name="tags" [(ngModel)]="seminar.tags">
-                <option [ngValue]="getSelected(seminar.tags, tagOption)" *ngFor="let tagOption of tags; trackBy: trackTagById">{{tagOption.id}}</option>
+                <option [ngValue]="getSelected(seminar.tags, tagOption)" *ngFor="let tagOption of tags; trackBy: trackTagById">{{tagOption.name}}</option>
             </select>
         </div>
     </div>

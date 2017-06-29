@@ -33,7 +33,7 @@
             <label jhiTranslate="misilApp.place.organizedBy" for="field_organizedBy">Organized By</label>
             <select class="form-control" id="field_organizedBy" name="organizedBy" [(ngModel)]="place.organizedById" >
                 <option [ngValue]="null"></option>
-                <option [ngValue]="organizerOption.id" *ngFor="let organizerOption of organizers; trackBy: trackOrganizerById">{{organizerOption.id}}</option>
+                <option [ngValue]="organizerOption.id" *ngFor="let organizerOption of organizers; trackBy: trackOrganizerById">{{organizerOption.name}}</option>
             </select>
         </div>
     </div>

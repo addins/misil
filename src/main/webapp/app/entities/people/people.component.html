@@ -19,7 +19,7 @@
             <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="externalId"><span jhiTranslate="misilApp.people.externalId">External Id</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="phone"><span jhiTranslate="misilApp.people.phone">Phone</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="userId"><span jhiTranslate="misilApp.people.user">User</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="user.firstName"><span jhiTranslate="misilApp.people.user">User</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
             </thead>
@@ -29,7 +29,7 @@
                 <td>{{people.externalId}}</td>
                 <td>{{people.phone}}</td>
                 <td>
-                    {{people.userId}}
+                    {{people.userFirstName + ' ' + people.userLastName}}
                 </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
