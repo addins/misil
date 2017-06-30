@@ -4,12 +4,12 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A Seminar.
@@ -17,7 +17,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "seminar")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Seminar implements Serializable {
+public class Seminar extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

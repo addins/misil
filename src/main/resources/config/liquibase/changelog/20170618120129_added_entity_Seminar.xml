@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd
-                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
     <property name="now" value="now()" dbms="h2"/>
 
@@ -52,12 +50,20 @@
             <column name="presenter_id" type="bigint">
                 <constraints nullable="true" />
             </column>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         <dropDefaultValue tableName="seminar" columnName="start_time" columnDataType="datetime"/>
         <dropDefaultValue tableName="seminar" columnName="end_time" columnDataType="datetime"/>
-        
+
         <createTable tableName="seminar_attendees">
             <column name="attendees_id" type="bigint">
                 <constraints nullable="false"/>
@@ -68,7 +74,7 @@
         </createTable>
 
         <addPrimaryKey columnNames="seminars_id, attendees_id" tableName="seminar_attendees"/>
-        
+
         <createTable tableName="seminar_special_guests">
             <column name="special_guests_id" type="bigint">
                 <constraints nullable="false"/>
@@ -79,7 +85,7 @@
         </createTable>
 
         <addPrimaryKey columnNames="seminars_id, special_guests_id" tableName="seminar_special_guests"/>
-        
+
         <createTable tableName="seminar_tags">
             <column name="tags_id" type="bigint">
                 <constraints nullable="false"/>
@@ -90,6 +96,6 @@
         </createTable>
 
         <addPrimaryKey columnNames="seminars_id, tags_id" tableName="seminar_tags"/>
-        
+
     </changeSet>
 </databaseChangeLog>
