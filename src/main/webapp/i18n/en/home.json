@@ -1,19 +1,15 @@
 {
     "home": {
-        "title": "Welcome, Java Hipster!",
-        "subtitle": "This is your homepage",
+        "title": "Welcome, to Misil!",
+        "subtitle": "What is it for?",
         "logged": {
             "message": "You are logged in as user \"{{username}}\"."
         },
-        "question": "If you have any question on JHipster:",
+        "question": "If you have any question on Misil:",
         "link": {
-            "homepage": "JHipster homepage",
-            "stackoverflow": "JHipster on Stack Overflow",
-            "bugtracker": "JHipster bug tracker",
-            "chat": "JHipster public chat room",
-            "follow": "follow @java_hipster on Twitter"
+            "bugtracker": "Misil bug tracker"
         },
-        "like": "If you like JHipster, don't forget to give us a star on",
+        "like": "If you like Misil, don't forget to give us a star on",
         "github": "GitHub"
     }
 }
