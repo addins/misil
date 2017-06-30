@@ -1,8 +1,10 @@
 package org.addin.misil.service;
 
 import org.addin.misil.MisilApp;
-import org.addin.misil.domain.User;
 import org.addin.misil.config.Constants;
+import org.addin.misil.domain.People;
+import org.addin.misil.domain.User;
+import org.addin.misil.repository.PeopleRepository;
 import org.addin.misil.repository.UserRepository;
 import org.addin.misil.service.dto.UserDTO;
 import org.addin.misil.service.util.RandomUtil;
@@ -10,18 +12,17 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.test.context.junit4.SpringRunner;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Optional;
 import java.util.List;
+import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Test class for the UserResource REST controller.
@@ -38,6 +39,9 @@ public class UserServiceIntTest {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private PeopleRepository peopleRepository;
 
     @Test
     public void assertThatUserMustExistToResetPassword() {
@@ -138,5 +142,30 @@ public class UserServiceIntTest {
         assertThat(userRepository.findOneByLogin("johndoe")).isPresent();
         userService.removeNotActivatedUsers();
         assertThat(userRepository.findOneByLogin("johndoe")).isNotPresent();
+    }
+
+    @Test
+    public void assertPeopleIsCreatedOnUserCreation() {
+        User user = userService.createUser("johndoe", "johndoe", "John", "Doe", "john.doe@localhost", "http://placehold.it/50x50", "en-US");
+        assertThat(peopleRepository.findOneByUser(user)).isPresent();
+    }
+
+    @Test
+    public void assertPeopleUserIsNullOnNotActivatedUserRemoval() {
+        User user = userService.createUser("johndoe", "johndoe", "John", "Doe", "john.doe@localhost", "http://placehold.it/50x50", "en-US");
+        user.setActivated(false);
+        user.setCreatedDate(Instant.now().minus(30, ChronoUnit.DAYS));
+        userRepository.save(user);
+        assertThat(userRepository.findOneByLogin("johndoe")).isPresent();
+        Optional<People> oneByUser = peopleRepository.findOneByUser(user);
+        assertThat(oneByUser).isPresent();
+        Long peopleId = oneByUser.get().getId();
+
+        userService.removeNotActivatedUsers();
+        assertThat(userRepository.findOneByLogin("johndoe")).isNotPresent();
+        assertThat(peopleRepository.findOneByUser(user)).isNotPresent();
+        People people = peopleRepository.findOne(peopleId);
+        assertThat(people).isNotNull();
+        assertThat(people.getUser()).isNull();
     }
 }

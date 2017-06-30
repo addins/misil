@@ -39,4 +39,12 @@ public interface PeopleService {
      *  @param id the id of the entity
      */
     void delete(Long id);
+
+    PeopleDTO createPeople(PeopleDTO people, Long userId);
+
+    PeopleDTO findOneByUserId(Long userId);
+
+    void deleteByUserId(Long userId);
+
+    void nullingPeopleUser(Long userId);
 }

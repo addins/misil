@@ -1,8 +1,9 @@
 package org.addin.misil.service.impl;
 
-import org.addin.misil.service.PeopleService;
 import org.addin.misil.domain.People;
+import org.addin.misil.domain.User;
 import org.addin.misil.repository.PeopleRepository;
+import org.addin.misil.service.PeopleService;
 import org.addin.misil.service.dto.PeopleDTO;
 import org.addin.misil.service.mapper.PeopleMapper;
 import org.slf4j.Logger;
@@ -11,6 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 
 /**
@@ -82,5 +85,57 @@ public class PeopleServiceImpl implements PeopleService{
     public void delete(Long id) {
         log.debug("Request to delete People : {}", id);
         peopleRepository.delete(id);
+    }
+
+    @Override
+    public PeopleDTO createPeople(PeopleDTO people, Long userId) {
+        User findUser = new User();
+        findUser.setId(userId);
+        Optional<People> existPeople = peopleRepository.findOneByUser(findUser);
+        if (existPeople.isPresent()) {
+            throw new IllegalArgumentException("People for userId " + userId + " already exist");
+        }
+        People entity = peopleMapper.toEntity(people);
+        entity.setUser(new User());
+        entity.getUser().setId(userId);
+        peopleRepository.save(entity);
+        log.debug("Created Information for People: {}", entity);
+        return peopleMapper.toDto(entity);
+    }
+
+    @Override
+    public PeopleDTO findOneByUserId(Long userId) {
+        log.debug("Request to get People by userId {}", userId);
+        User user = new User();
+        user.setId(userId);
+        Optional<People> oneByUser = peopleRepository.findOneByUser(user);
+        if (oneByUser.isPresent()) {
+            return peopleMapper.toDto(oneByUser.get());
+        }
+        return null;
+    }
+
+    @Override
+    public void deleteByUserId(Long userId) {
+        log.debug("Request to delete People by userId {}", userId);
+        User user = new User();
+        user.setId(userId);
+        Optional<People> oneByUser = peopleRepository.findOneByUser(user);
+        oneByUser.ifPresent(p -> {
+                peopleRepository.delete(p.getId());
+            }
+        );
+    }
+
+    @Override
+    public void nullingPeopleUser(Long userId) {
+        log.debug("Request to set null user to People by userId {}", userId);
+        User user = new User();
+        user.setId(userId);
+        Optional<People> oneByUser = peopleRepository.findOneByUser(user);
+        oneByUser.ifPresent(p -> {
+            p.setUser(null);
+            peopleRepository.save(p);
+        });
     }
 }

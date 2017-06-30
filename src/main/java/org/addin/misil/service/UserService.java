@@ -1,17 +1,18 @@
 package org.addin.misil.service;
 
+import org.addin.misil.config.Constants;
 import org.addin.misil.domain.Authority;
 import org.addin.misil.domain.User;
 import org.addin.misil.repository.AuthorityRepository;
-import org.addin.misil.config.Constants;
 import org.addin.misil.repository.UserRepository;
 import org.addin.misil.security.AuthoritiesConstants;
 import org.addin.misil.security.SecurityUtils;
-import org.addin.misil.service.util.RandomUtil;
+import org.addin.misil.service.dto.PeopleDTO;
 import org.addin.misil.service.dto.UserDTO;
-
+import org.addin.misil.service.util.RandomUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -21,7 +22,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -39,10 +43,13 @@ public class UserService {
 
     private final AuthorityRepository authorityRepository;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository) {
+    private final PeopleService peopleService;
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository, PeopleService peopleService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
+        this.peopleService = peopleService;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -90,7 +97,13 @@ public class UserService {
         newUser.setLogin(login);
         // new user gets initially a generated password
         newUser.setPassword(encryptedPassword);
+        if (firstName == null || firstName.isEmpty()) {
+            firstName = login;
+        }
         newUser.setFirstName(firstName);
+        if (lastName == null || lastName.isEmpty()) {
+            lastName = login;
+        }
         newUser.setLastName(lastName);
         newUser.setEmail(email);
         newUser.setImageUrl(imageUrl);
@@ -102,6 +115,8 @@ public class UserService {
         authorities.add(authority);
         newUser.setAuthorities(authorities);
         userRepository.save(newUser);
+        PeopleDTO people = new PeopleDTO();
+        peopleService.createPeople(people, newUser.getId());
         log.debug("Created Information for User: {}", newUser);
         return newUser;
     }
@@ -110,7 +125,13 @@ public class UserService {
         User user = new User();
         user.setLogin(userDTO.getLogin());
         user.setFirstName(userDTO.getFirstName());
+        if (user.getFirstName() == null || user.getFirstName().isEmpty()) {
+            user.setFirstName(user.getLogin());
+        }
         user.setLastName(userDTO.getLastName());
+        if (user.getLastName() == null || user.getLastName().isEmpty()) {
+            user.setLastName(user.getLogin());
+        }
         user.setEmail(userDTO.getEmail());
         user.setImageUrl(userDTO.getImageUrl());
         if (userDTO.getLangKey() == null) {
@@ -185,6 +206,12 @@ public class UserService {
 
     public void deleteUser(String login) {
         userRepository.findOneByLogin(login).ifPresent(user -> {
+            try {
+                log.debug("Trying to delete people by user id {}", user.getId());
+                peopleService.deleteByUserId(user.getId());
+            } catch (DataIntegrityViolationException e) {
+                log.debug("Delete people by user id {} cause {}", user.getId(), e.getRootCause());
+            }
             userRepository.delete(user);
             log.debug("Deleted User: {}", user);
         });
@@ -230,6 +257,7 @@ public class UserService {
         List<User> users = userRepository.findAllByActivatedIsFalseAndCreatedDateBefore(Instant.now().minus(3, ChronoUnit.DAYS));
         for (User user : users) {
             log.debug("Deleting not activated user {}", user.getLogin());
+            peopleService.nullingPeopleUser(user.getId());
             userRepository.delete(user);
         }
     }

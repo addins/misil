@@ -5,11 +5,10 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A People.
@@ -32,8 +31,7 @@ public class People implements Serializable {
     @Column(name = "phone")
     private String phone;
 
-    @OneToOne(optional = false)
-    @NotNull
+    @OneToOne(optional = true)
     @JoinColumn(unique = true)
     private User user;
 
