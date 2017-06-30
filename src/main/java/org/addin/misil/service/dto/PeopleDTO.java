@@ -1,16 +1,13 @@
 package org.addin.misil.service.dto;
 
 
-import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
  * A DTO for the People entity.
  */
-public class PeopleDTO implements Serializable {
+public class PeopleDTO extends AbstractAuditingDTO implements Serializable {
 
     private Long id;
 

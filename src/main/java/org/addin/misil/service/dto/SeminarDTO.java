@@ -1,17 +1,17 @@
 package org.addin.misil.service.dto;
 
 
-import java.time.ZonedDateTime;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A DTO for the Seminar entity.
  */
-public class SeminarDTO implements Serializable {
+public class SeminarDTO extends AbstractAuditingDTO implements Serializable {
 
     private Long id;
 

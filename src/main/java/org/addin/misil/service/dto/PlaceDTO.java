@@ -1,16 +1,14 @@
 package org.addin.misil.service.dto;
 
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
  * A DTO for the Place entity.
  */
-public class PlaceDTO implements Serializable {
+public class PlaceDTO extends AbstractAuditingDTO implements Serializable {
 
     private Long id;
 
