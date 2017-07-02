@@ -1,5 +1,6 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import { MomentModule } from 'angular2-moment';
 
 import {
     MisilSharedLibsModule,
@@ -19,7 +20,8 @@ import {
 @NgModule({
     imports: [
         MisilSharedLibsModule,
-        MisilSharedCommonModule
+        MisilSharedCommonModule,
+        MomentModule
     ],
     declarations: [
         JhiLoginModalComponent,
@@ -41,7 +43,8 @@ import {
         MisilSharedCommonModule,
         JhiLoginModalComponent,
         HasAnyAuthorityDirective,
-        DatePipe
+        DatePipe,
+        MomentModule
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 
