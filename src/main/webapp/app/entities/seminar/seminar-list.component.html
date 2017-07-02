@@ -1,4 +1,18 @@
 <div>
+    <div *ngIf="!seminars">
+        <div class="mx-auto">
+            <p class="text-center">
+                <span jhiTranslate="misilApp.seminar.messages.empty.prefix">No seminar found, do you want to create one?</span>
+                <br/>
+                <button class="btn btn-primary create-seminar" [routerLink]="['/', { outlets: { popup: ['seminar-new'] } }]">
+                    <span class="fa fa-plus"></span>
+                    <span  jhiTranslate="misilApp.seminar.home.createLabel">
+                    Create new Seminar
+                    </span>
+                </button>
+            </p>
+        </div>
+    </div>
     <div *ngIf="seminars" infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
         <div class="card mb-3" *ngFor="let seminar of seminars ;trackBy: trackId">
             <div class="card-block">
@@ -16,29 +30,25 @@
                 <div class="card-text">
                     <div class="row">
                         <div class="col-sm-10">
-                            <dl class="row-md">
-                                <dt><span jhiTranslate="misilApp.seminar.startTime">Start Time</span></dt>
-                                <dd>
+                            <dl class="row">
+                                <dt class="col-sm-2"><span jhiTranslate="misilApp.seminar.startTime">Start Time</span></dt>
+                                <dd class="col-sm-10">
                                     <span>{{seminar.startTime | date:'medium'}}</span>
                                 </dd>
-                                <dt><span jhiTranslate="misilApp.seminar.endTime">End Time</span></dt>
-                                <dd>
+                                <dt class="col-sm-2"><span jhiTranslate="misilApp.seminar.endTime">End Time</span></dt>
+                                <dd class="col-sm-10">
                                     <span>{{seminar.endTime | date:'medium'}}</span>
                                 </dd>
-                                <div *ngIf="seminar.placeId">
-                                    <dt><span jhiTranslate="misilApp.seminar.place">Place</span></dt>
-                                    <dd>
-                                        <a [routerLink]="['/place', seminar.placeId]">{{seminar.placeName}}</a>
-                                    </dd>
-                                </div>
+                                <dt *ngIf="seminar.placeId" class="col-sm-2"><span jhiTranslate="misilApp.seminar.place">Place</span></dt>
+                                <dd *ngIf="seminar.placeId" class="col-sm-10">
+                                    <a [routerLink]="['/place', seminar.placeId]">{{seminar.placeName}}</a>
+                                </dd>
                             </dl>
                             <p class="card-text">
                                 <small class="text-muted">
                                     Last updated 3 mins ago<span class="card-text" *ngIf="seminar.organizedById">, 
                                     <span jhiTranslate="misilApp.seminar.organizedBy">Organized By</span>:
-                                    <a [routerLink]="['/organizer', seminar.organizedById]">{{seminar.organizerName}}</a>
-                                    </span>
-                                    <span class="card-text" *ngIf="seminar.tags.length > 0 ">, 
+                                    <a [routerLink]="['/organizer', seminar.organizedById]">{{seminar.organizerName}}</a></span><span class="card-text" *ngIf="seminar.tags.length > 0 ">, 
                                     <span jhiTranslate="misilApp.seminar.tags">Tags</span>:
                                     <span *ngFor="let tags of seminar.tags; let last = last">
                                         <a [routerLink]="['/tag', tags?.id ]">{{tags.name}}</a>{{last ? '' : ', '}}
