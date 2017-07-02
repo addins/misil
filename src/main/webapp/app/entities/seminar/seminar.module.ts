@@ -6,6 +6,7 @@ import {
     SeminarService,
     SeminarPopupService,
     SeminarComponent,
+    SeminarListComponent,
     SeminarDetailComponent,
     SeminarDialogComponent,
     SeminarPopupComponent,

@@ -15,9 +15,14 @@
             "detail": {
                 "title": "Seminar"
             },
+            "action": {
+                "join": "Join",
+                "reload": "Reload"
+            },
             "title": "Title",
             "startTime": "Start Time",
             "endTime": "End Time",
+            "time": "Time",
             "canceled": "Canceled",
             "published": "Published",
             "place": "Place",

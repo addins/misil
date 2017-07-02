@@ -5,4 +5,5 @@ export * from './seminar-dialog.component';
 export * from './seminar-delete-dialog.component';
 export * from './seminar-detail.component';
 export * from './seminar.component';
+export * from './seminar-list.component';
 export * from './seminar.route';
