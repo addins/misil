@@ -1,39 +1,34 @@
 <div class="row">
-    <div class="col-md-12">
-        <h1 class="display-4" jhiTranslate="home.title">Misil</h1>
-        <p class="lead" jhiTranslate="home.subtitle">What is it for?</p>
-        
-        <div class="alert alert-success" *ngIf="isAuthenticated()">
-            <span *ngIf="account" jhiTranslate="home.logged.message"
-                    translateValues="{username: '{{account.login}}'}"> You are logged in as user "{{account.login}}". </span>
+    <div class="col-md-12" [ngSwitch]="isAuthenticated()">
+        <div *ngSwitchCase="true">
+            <jhi-seminar-list></jhi-seminar-list>
         </div>
+        <div *ngSwitchCase="false">
+            <h1 class="display-4" jhiTranslate="home.title">Misil</h1>
+            <p class="lead" jhiTranslate="home.subtitle">What is it for?</p>
 
-        <div [ngSwitch]="isAuthenticated()">
-            <div *ngSwitchCase="true">
-                <jhi-seminar-list></jhi-seminar-list>
-            </div>
 
-            <div class="alert alert-warning" *ngSwitchCase="false">
-                <span jhiTranslate="global.messages.info.authenticated.prefix">If you want to </span>
-                <a class="alert-link" (click)="login()" jhiTranslate="global.messages.info.authenticated.link">sign in</a>
-            </div>
+                <div class="alert alert-warning">
+                    <span jhiTranslate="global.messages.info.authenticated.prefix">If you want to </span>
+                    <a class="alert-link" (click)="login()" jhiTranslate="global.messages.info.authenticated.link">sign in</a>
+                </div>
 
-            <div class="alert alert-warning" *ngSwitchCase="false">
-                <span jhiTranslate="global.messages.info.register.noaccount">You don't have an account yet?</span>
-                <a class="alert-link" routerLink="register" jhiTranslate="global.messages.info.register.link">Register a new account</a>
-            </div>
+                <div class="alert alert-warning">
+                    <span jhiTranslate="global.messages.info.register.noaccount">You don't have an account yet?</span>
+                    <a class="alert-link" routerLink="register" jhiTranslate="global.messages.info.register.link">Register a new account</a>
+                </div>
+
+            <p jhiTranslate="home.question">
+                If you have any question on Misil:
+            </p>
+
+            <ul>
+                <li><a href="https://github.com/addins/misil/issues?state=open" target="_blank" rel="noopener" jhiTranslate="home.link.bugtracker">Misil bug tracker</a></li>
+            </ul>
+
+            <p>
+                <span jhiTranslate="home.like">If you like Misil, don't forget to give us a star on</span> <a href="https://github.com/addins/misil" target="_blank" rel="noopener" jhiTranslate="home.github">Github</a>!
+            </p>
         </div>
-
-        <p jhiTranslate="home.question">
-            If you have any question on Misil:
-        </p>
-
-        <ul>
-            <li><a href="https://github.com/addins/misil/issues?state=open" target="_blank" rel="noopener" jhiTranslate="home.link.bugtracker">Misil bug tracker</a></li>
-        </ul>
-
-        <p>
-            <span jhiTranslate="home.like">If you like Misil, don't forget to give us a star on</span> <a href="https://github.com/addins/misil" target="_blank" rel="noopener" jhiTranslate="home.github">Github</a>!
-        </p>
     </div>
 </div>
