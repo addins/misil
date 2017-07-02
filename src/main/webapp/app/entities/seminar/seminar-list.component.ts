@@ -24,6 +24,7 @@ export class SeminarListComponent implements OnInit, OnDestroy {
     queryCount: any;
     reverse: any;
     totalItems: number;
+    isLoading = false;
 
     constructor(
         private seminarService: SeminarService,
@@ -43,6 +44,7 @@ export class SeminarListComponent implements OnInit, OnDestroy {
     }
 
     loadAll() {
+        this.isLoading = true;
         this.seminarService.query({
             page: this.page,
             size: this.itemsPerPage,
@@ -91,6 +93,7 @@ export class SeminarListComponent implements OnInit, OnDestroy {
     }
 
     private onSuccess(data, headers) {
+        this.isLoading = false;
         this.links = this.parseLinks.parse(headers.get('link'));
         this.totalItems = headers.get('X-Total-Count');
         for (let i = 0; i < data.length; i++) {
@@ -99,6 +102,7 @@ export class SeminarListComponent implements OnInit, OnDestroy {
     }
 
     private onError(error) {
+        this.isLoading = false;
         this.alertService.error(error.message, null, null);
     }
 }

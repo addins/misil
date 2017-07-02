@@ -13,6 +13,12 @@
             </p>
         </div>
     </div>
+    <div class="pb-3">
+        <button class="btn btn-secondary btn-sm" [disabled]="isLoading" (click)="loadAll()">
+                <span class="fa fa-refresh"></span>
+                <span class="hidden-md-down" jhiTranslate="entity.action.refresh">Refresh</span>
+        </button>
+    </div>
     <div *ngIf="seminars" infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
         <div class="card mb-3" *ngFor="let seminar of seminars ;trackBy: trackId">
             <div class="card-block">
