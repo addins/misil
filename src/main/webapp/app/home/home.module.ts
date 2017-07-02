@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { MisilSharedModule } from '../shared';
 
 import { HOME_ROUTE, HomeComponent } from './';
+import { SeminarListComponent } from '../entities/seminar/index';
 
 @NgModule({
     imports: [
@@ -12,6 +13,7 @@ import { HOME_ROUTE, HomeComponent } from './';
     ],
     declarations: [
         HomeComponent,
+        SeminarListComponent
     ],
     entryComponents: [
     ],
