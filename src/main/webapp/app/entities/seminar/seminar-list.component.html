@@ -33,11 +33,11 @@
                             <dl class="row">
                                 <dt class="col-sm-2"><span jhiTranslate="misilApp.seminar.startTime">Start Time</span></dt>
                                 <dd class="col-sm-10">
-                                    <span>{{seminar.startTime | date:'medium'}}</span>
+                                    <span>{{seminar.startTime | amDateFormat:'dddd, MMMM Do YYYY, h:mm:ss a'}}</span>
                                 </dd>
                                 <dt class="col-sm-2"><span jhiTranslate="misilApp.seminar.endTime">End Time</span></dt>
                                 <dd class="col-sm-10">
-                                    <span>{{seminar.endTime | date:'medium'}}</span>
+                                    <span>{{seminar.endTime | amDateFormat:'dddd, MMMM Do YYYY, h:mm:ss a'}}</span>
                                 </dd>
                                 <dt *ngIf="seminar.placeId" class="col-sm-2"><span jhiTranslate="misilApp.seminar.place">Place</span></dt>
                                 <dd *ngIf="seminar.placeId" class="col-sm-10">
@@ -46,7 +46,8 @@
                             </dl>
                             <p class="card-text">
                                 <small class="text-muted">
-                                    Last updated 3 mins ago<span class="card-text" *ngIf="seminar.organizedById">, 
+                                    <span jhiTranslate="global.messages.info.lastUpdated">Last updated: </span>
+                                    {{ seminar.lastModifiedDate | amTimeAgo}}<span class="card-text" *ngIf="seminar.organizedById">, 
                                     <span jhiTranslate="misilApp.seminar.organizedBy">Organized By</span>:
                                     <a [routerLink]="['/organizer', seminar.organizedById]">{{seminar.organizerName}}</a></span><span class="card-text" *ngIf="seminar.tags.length > 0 ">, 
                                     <span jhiTranslate="misilApp.seminar.tags">Tags</span>:

@@ -12,6 +12,7 @@ export class Seminar {
         public attendeesId?: number,
         public specialGuestsId?: number,
         public tagsId?: number,
+        public lastModifiedDate?: any,
     ) {
         this.canceled = false;
         this.published = false;

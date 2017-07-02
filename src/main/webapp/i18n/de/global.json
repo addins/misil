@@ -58,7 +58,8 @@
                 "register": {
                     "noaccount": "Sie haben noch keinen Zugang?",
                     "link": "Registrieren Sie sich"
-                }
+                },
+                "lastUpdated": "Letzte aktualisierung: "
             },
             "error": {
                 "dontmatch": "Das bestätigte Passwort entspricht nicht dem neuen Passwort!"

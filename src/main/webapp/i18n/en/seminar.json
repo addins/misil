@@ -21,7 +21,7 @@
             },
             "messages": {
                 "empty": {
-                    "prefix": "No Seminar found, do you want create one?",
+                    "prefix": "No Seminar found, do you want to create one?",
                     "link": "",
                     "suffix": ""
                 }

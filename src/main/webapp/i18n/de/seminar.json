@@ -19,6 +19,13 @@
                 "join": "Join",
                 "reload": "Reload"
             },
+            "messages": {
+                "empty": {
+                    "prefix": "Kein Seminar gefunden, willst du einen erstellen?",
+                    "link": "",
+                    "suffix": ""
+                }
+            },
             "title": "Title",
             "startTime": "Start Time",
             "endTime": "End Time",
