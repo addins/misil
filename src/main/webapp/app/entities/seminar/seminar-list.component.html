@@ -37,10 +37,12 @@
                                     Last updated 3 mins ago<span class="card-text" *ngIf="seminar.organizedById">, 
                                     <span jhiTranslate="misilApp.seminar.organizedBy">Organized By</span>:
                                     <a [routerLink]="['/organizer', seminar.organizedById]">{{seminar.organizerName}}</a>
+                                    </span>
                                     <span class="card-text" *ngIf="seminar.tags">, 
                                     <span jhiTranslate="misilApp.seminar.tags">Tags</span>:
                                     <span *ngFor="let tags of seminar.tags; let last = last">
                                         <a [routerLink]="['/tag', tags?.id ]">{{tags.name}}</a>{{last ? '' : ', '}}
+                                    </span>
                                     </span>
                                 </small>
                             </p>
