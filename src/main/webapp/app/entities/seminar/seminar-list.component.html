@@ -1,5 +1,5 @@
 <div>
-    <div *ngIf="seminars.length < 1">
+    <div *ngIf="seminars.length < 1 && !isLoading">
         <div class="mx-auto">
             <p class="text-center">
                 <span jhiTranslate="misilApp.seminar.messages.empty.prefix">No seminar found, do you want to create one?</span>
